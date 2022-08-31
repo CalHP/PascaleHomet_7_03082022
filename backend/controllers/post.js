@@ -14,11 +14,9 @@ exports.getOnePost = (req, res, next) => {
 };
 
 exports.createPost = (req, res, next) => {
-  const postObject = JSON.parse(req.body.post);
-  delete postObject._id;
-  delete postObject._userId;
+  console.log(req.body);
   const post = new Post({
-    ...postObject,
+    ...req.body,
     userId: req.auth.userId,
     imageUrl: `${req.protocol}://${req.get("host")}/images/${
       req.file.filename
@@ -47,12 +45,12 @@ exports.modifyPost = (req, res, next) => {
   delete postObject._userId;
   Post.findOne({ _id: req.params.id })
     .then((post) => {
-      if (post.userId != req.auth.userId) {
+      if (post.userId != req.auth.userId && req.auth.role == false){
         res.status(401).json({ message: "Not authorized" });
       } else {
         Post.updateOne(
           { _id: req.params.id },
-          { ...postObject, _id: req.params.id }
+          { ...postObject}
         )
           .then(() => res.status(200).json({ message: "Objet modifié!" }))
           .catch((error) => res.status(401).json({ error }));
