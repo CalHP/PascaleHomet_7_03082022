@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+// import { Link } from 'react-router-dom'
 
 import logo from "../../assets/logo/icon-left-font.png";
 import styled from "styled-components";
@@ -14,35 +14,35 @@ const HeaderDivImage = styled.div`
   height: 180px;
   background-color: ${colors.backgroundLight};
 `;
-const HeaderNav = styled.nav`
-  margin-left:30%;
-`;
-const HeaderNavUl = styled.div`
-  list-style-type: none;  
-`
-const HeaderNavLi = styled.li`
-padding-top : 20%;
-`
-const HeaderNavLink = styled(Link)`
-text-decoration: none;
-color:white;
-font-size:20px;
-letter-spacing:3px;
-font-weight : bold;
-`
+// const HeaderNav = styled.nav`
+//   margin-left:30%;
+// `;
+// const HeaderNavUl = styled.div`
+//   list-style-type: none;  
+// `
+// const HeaderNavLi = styled.li`
+// padding-top : 50%;
+// `
+// const HeaderNavLink = styled(Link)`
+// text-decoration: none;
+// color:white;
+// font-size:20px;
+// letter-spacing:3px;
+// font-weight : bold;
+// `
 export default function Header() {
   return (
     <HeaderDivImage>
       <div>
         <HomeImageHeader src={logo} alt="logo" />
       </div>
-      <HeaderNav>
+      {/* <HeaderNav>
         <HeaderNavUl>
           <HeaderNavLi>
             <HeaderNavLink to = "#">Déconnexion</HeaderNavLink>
           </HeaderNavLi>
         </HeaderNavUl>
-      </HeaderNav>
+      </HeaderNav> */}
     </HeaderDivImage>
   );
 }

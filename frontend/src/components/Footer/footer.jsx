@@ -6,7 +6,7 @@ import colors from "../../utils/style/colors";
 const FooterDiv = styled.div`
     background-color:${colors.backgroundLight};
     height:60px;    
-    color:${colors.white};
+    color:${colors.secondary};
     font-weight:bold;
     font-size:18px;
 `

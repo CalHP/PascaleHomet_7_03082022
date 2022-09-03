@@ -1,8 +1,12 @@
-@import url('https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap");
 
-body{
-    margin: 0;
-    padding:0;
-    font-family: Lato, 'Arial', sans-serif;
-    color:#4E5166;
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Lato, "Arial", sans-serif;
+  color: #4e5166;
+}
+.icon {
+  width: 70%;
+  height: 50%;
 }
