@@ -1,15 +1,13 @@
 import React from "react";
 
-import styled from "styled-components";
-import colors from "../../utils/style/colors";
-
 import { HomeForm } from "../../utils/style/connexion";
 import { HomeInput } from "../../utils/style/connexion";
 import { Button } from "../../utils/style/connexion";
 import { Label } from "../../utils/style/connexion";
-import {ButtonPasInscrit} from "../../utils/style/connexion";
+import { ButtonFormChange } from "../../utils/style/connexion";
 
-function Login() {
+//on passe le props en paramettre pour le récupérer
+function Login(props) {
   return (
     <div>
       <div>
@@ -21,12 +19,13 @@ function Login() {
           <HomeInput type="password" name="password" id="password" required />
           <p id="PasswoErrorMsg">{/*Message d'erreur*/}</p>
           <div>
-            <Button type="submit" value="LOGIN" id="login" />
-            <ButtonPasInscrit
+            <Button type="submit" value="LOGIN" />
+            <ButtonFormChange
               type="button"
               value="Pas encore inscrit ? Cliquez ici "
-              // onClick={() => console.log("")}
-              id="signin"
+              //on met le props envoyé depuis la page home en utilisant son nom (change), pour activer la fonction que l'on a donné lors d'un click sur le bouton
+              onClick={props.change}
+              id="login"
             />
           </div>
         </HomeForm>

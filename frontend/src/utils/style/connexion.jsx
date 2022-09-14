@@ -1,6 +1,20 @@
 import styled from "styled-components";
 import colors from "./colors";
 
+// Présentation page d'accueil -connexion
+export const HomeImg = styled.img`
+  height: 33em;
+  width: 100%;
+  object-fit: cover;
+  opacity: 0.5;
+  position: absolute;
+`;
+export const HomeDiv = styled.div`
+  background: ${colors.primary};
+  height: 33em;
+`;
+
+// Mise en page Login
 export const HomeForm = styled.form`
   display: flex;
   flex-direction: column;
@@ -12,15 +26,9 @@ export const HomeForm = styled.form`
   padding-top: 2%;
   margin: 0 20% 0 20%;
 `;
-
-export const FormParagraph = styled.p`
-  font-size: 20px;
-`;
-
 export const HomeInput = styled.input`
   font-size: 25px;
 `;
-
 export const FormDiv = styled.div`
   display: flex;
   flex-direction: row;
@@ -28,7 +36,7 @@ export const FormDiv = styled.div`
   margin-top: 5%;
   font-size: 15px;
 `;
-
+// Composants communs pages de connection
 export const Button = styled.input`
   cursor: pointer;
   padding: 2% 3%;
@@ -44,6 +52,16 @@ export const Label = styled.label`
   color: ${colors.secondary};
   font-size: 20px;
   font-weight: bold;
+`;
+export const ButtonFormChange = styled.input`
+  cursor: pointer;
+  padding-left: 15%;
+  font-size: 20px;
+  font-weight: bold;
+  color: ${colors.secondary};
+  letter-spacing: 1px;
+  background-color: transparent;
+  border: none;
 `;
 
 // Bouton page Layout
@@ -67,15 +85,5 @@ export const ButtonDiv = styled.div`
 `;
 export const ButtonLikeDislike = styled.button`
   background: none;
-  border: none;
-`;
-export const ButtonPasInscrit = styled.input`
-  cursor: pointer;
-  padding-left: 15%;
-  font-size: 20px;
-  font-weight: bold;
-  color: ${colors.secondary};
-  letter-spacing: 1px;
-  background-color: transparent;
   border: none;
 `;

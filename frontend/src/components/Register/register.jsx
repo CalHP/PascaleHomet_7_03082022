@@ -1,11 +1,9 @@
 import React from "react";
 
-import { HomeForm } from "../../utils/style/connexion";
-import { HomeInput } from "../../utils/style/connexion";
-import { Button } from "../../utils/style/connexion";
-import { Label } from "../../utils/style/connexion";
+import { HomeForm, HomeInput, Button, Label, ButtonFormChange} from "../../utils/style/connexion";
 
-function SignIn() {
+//on passe le props en paramettre pour le récupérer
+function Register(props) {
   return (
     <div>
       <div>
@@ -23,7 +21,14 @@ function SignIn() {
           <HomeInput type="password" name="password" id="password" required />
           <p id="PasswoErrorMsg">{/*Message d'erreur*/}</p>
           <div>
-            <Button type="submit" value="Vous inscrire" id="login" />
+            <Button type="submit" value="Vous inscrire"/>
+            <ButtonFormChange
+              type="button"
+              value="Vous avez déjà un compte ? Cliquez ici "
+              //on met le props envoyé depuis la page home en utilisant son nom (change), pour activer la fonction que l'on a donné lors d'un click sur le bouton
+              onClick={props.change}
+              id="register"
+            />
           </div>
         </HomeForm>
       </div>
@@ -31,4 +36,4 @@ function SignIn() {
   );
 }
 
-export default SignIn;
+export default Register;
