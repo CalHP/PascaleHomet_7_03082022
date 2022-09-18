@@ -21,7 +21,7 @@ function Register(props) {
           <HomeInput type="password" name="password" id="password" required />
           <p id="PasswoErrorMsg">{/*Message d'erreur*/}</p>
           <div>
-            <Button type="submit" value="Vous inscrire"/>
+            <Button type="submit" value="Vous inscrire" onClick={SignIn()}/>
             <ButtonFormChange
               type="button"
               value="Vous avez déjà un compte ? Cliquez ici "
@@ -36,4 +36,7 @@ function Register(props) {
   );
 }
 
+function SignIn() {
+
+}
 export default Register;

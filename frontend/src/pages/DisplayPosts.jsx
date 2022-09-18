@@ -13,8 +13,6 @@ import { faThumbsDown } from "@fortawesome/free-regular-svg-icons";
 
 import PostForm from "../components/PostForm/postform";
 
-// document.body.style = "background :"+ colors.secondary;
-
 function DisplayPosts() {
   const current = new Date();
   const date = `${current.getDate()}/${current.getMonth() + 1}/${current.getFullYear()}`;
@@ -22,12 +20,27 @@ function DisplayPosts() {
   const [postData, setPostData] = useState({});
 
   useEffect(() => {
-    fetch("`http://localhost:3000/api/post`").then((response) =>
-      response.json()).then(( postData) => {
-        setPostData(postData);
+    fetch("`http://localhost:3000/api/post`")
+    .then((response) => response.json())
+    .then((data) => {
+        setPostData(data);
       })
     .catch((err) => console.log("Erreur : " + err));
   }, []);  
+
+//   useEffect(() => {
+//     const url = "http://localhost:3000/api/post";
+//     const fetchData = async () => {
+//       try {
+//         const response = await fetch(url);
+//         const json = await response.json()
+//         console.log(json);
+//       } catch (error) {
+//         console.log("error", error);
+//       }
+//     };
+//     fetchData();
+// }, []);
 
   return (
     <CardPage>
@@ -40,7 +53,7 @@ function DisplayPosts() {
         </ImgDiv>
         <MsgCard>
           <Msg id="msgCard">
-            <MsgParagraph>{postData["text"]}
+            <MsgParagraph>"{postData["text"]}"
             </MsgParagraph>
           </Msg>
           <LikeDiv id="likeOrdilike">

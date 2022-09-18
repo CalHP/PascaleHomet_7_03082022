@@ -30,6 +30,7 @@ app.use(bodyParser.json());
 app.use('/api/auth', userRoutes);
 app.use('/api/post', postRoutes);
 app.use('/images', express.static(path.join(__dirname, 'images'))); //pour traiter les images
+app.use('/api/user', userRoutes);
 
 app.use(helmet());
 module.exports = app;

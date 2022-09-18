@@ -28,6 +28,7 @@ export const HomeForm = styled.form`
 `;
 export const HomeInput = styled.input`
   font-size: 25px;
+  border-radius: 20px;
 `;
 export const FormDiv = styled.div`
   display: flex;
