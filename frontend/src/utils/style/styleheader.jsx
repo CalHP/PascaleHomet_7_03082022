@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 
 export const HomeImageHeader = styled.img`
   width: 73%;
+  padding-top: 2%;
 `;
 export const HeaderDivImage = styled.div`
   display: flex;
@@ -18,7 +19,7 @@ export const HeaderNavUl = styled.div`
   list-style-type: none;
 `;
 export const HeaderNavLi = styled.li`
-  padding-top: 36%;
+  padding-top: 50%;
 `;
 export const HeaderNavLink = styled(Link)`
   text-decoration: none;

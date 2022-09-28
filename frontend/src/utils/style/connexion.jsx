@@ -15,20 +15,20 @@ export const HomeDiv = styled.div`
 `;
 
 // Mise en page Login
-export const HomeForm = styled.form`
+export const HomeFormLogin = styled.form`
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-around;
   position: relative;
-  height: 30%;
-  padding: 30px;
   padding: 0;
-  padding-top: 2%;
-  margin: 0 20% 0 20%;
+  margin: 0 25% 0 25%;
+  height: 25em;
 `;
-export const HomeInput = styled.input`
-  font-size: 25px;
-  border-radius: 20px;
+export const LabelLogin = styled.label`
+  color: ${colors.white};
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: -5%;
 `;
 export const FormDiv = styled.div`
   display: flex;
@@ -37,10 +37,9 @@ export const FormDiv = styled.div`
   margin-top: 5%;
   font-size: 15px;
 `;
-// Composants communs pages de connection
-export const Button = styled.input`
+export const ButtonLogin = styled.input`
   cursor: pointer;
-  padding: 2% 3%;
+  padding: 1% 2%;
   font-size: 20px;
   font-weight: bold;
   color: ${colors.secondary};
@@ -49,17 +48,77 @@ export const Button = styled.input`
   background-color: ${colors.backgroundLight};
   border: none;
 `;
-export const Label = styled.label`
+export const ErrorConnexionLogin = styled.p`
+  margin: 0;
+  font-size: 20px;
+  color: white;
+  font-weight: bold;
+  letter-spacing: 2px;
+  text-align: center;
+`;
+// Mise en page register
+export const HomeFormRegister = styled.form`
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  padding: 0;
+  padding-top: 0.2%;
+  margin: 0 5% 0 5%;
+`;
+export const ErrorConnexion = styled.p`
+  font-size: 1px;
+  color: white;
+  font-weight: bold;
+  letter-spacing: 2px;
+  text-align: center;
+`;
+export const DivCheckbox = styled.div`
+  padding: 2% 1% 1% 35%;
+`;
+export const ButtonRegister = styled.input`
+  cursor: pointer;
+  padding: 1% 2%;
+  font-size: 20px;
+  font-weight: bold;
   color: ${colors.secondary};
+  border-radius: 50px;
+  letter-spacing: 1px;
+  background-color: ${colors.backgroundLight};
+  border: none;
+  margin-left: 25%;
+`;
+export const LabelRegister = styled.label`
+  color: ${colors.white};
   font-size: 20px;
   font-weight: bold;
 `;
+export const LabelTerms = styled.label`
+  font-size: 20px;
+  padding: 0 1% 1% 2%;
+  color: ${colors.white};
+`;
+export const FormDisplayDiv = styled.div`
+  display: flex;
+  justify-content: space-evenly;
+  padding-top: 2%;
+`;
+export const LabelDisplayDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 30%;
+`;
+
+// Composants communs pages de connection
+export const HomeInput = styled.input`
+  font-size: 20px;
+  border-radius: 20px;
+`;
 export const ButtonFormChange = styled.input`
   cursor: pointer;
-  padding-left: 15%;
+  padding-left: 5%;
   font-size: 20px;
   font-weight: bold;
-  color: ${colors.secondary};
+  color: ${colors.white};
   letter-spacing: 1px;
   background-color: transparent;
   border: none;

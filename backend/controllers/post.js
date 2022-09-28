@@ -15,6 +15,7 @@ exports.getOnePost = (req, res, next) => {
 
 exports.createPost = (req, res, next) => {
   console.log(req.body);
+  console.log(req.file);
   const post = new Post({
     ...req.body,
     userId: req.auth.userId,

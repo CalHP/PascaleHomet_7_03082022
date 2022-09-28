@@ -1,28 +1,65 @@
-import React from "react";
+import React, { useState } from "react";
+import axios from "axios";
 
-import styled from "styled-components";
-import colors from "../../utils/style/colors";
+import {
+  HomeFormLogin,
+  HomeInput,
+  ButtonLogin,
+  LabelLogin,
+  ButtonFormChange,
+  ErrorConnexionLogin,
+} from "../../utils/style/connexion";
 
-import { HomeForm } from "../../utils/style/connexion";
-import { HomeInput } from "../../utils/style/connexion";
-import { Button } from "../../utils/style/connexion";
-import { Label } from "../../utils/style/connexion";
-import { ButtonPasInscrit } from "../../utils/style/connexion";
-import { ButtonFormChange } from "../../utils/style/connexion";
+const Login = (props) => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-function Login(props) {
+  const handleLogin = (e) => {
+    e.preventDefault();
+
+    axios({
+      method: "post",
+      url: `${process.env.REACT_APP_API_URL}auth/login`,
+      data: { email: email, password: password },
+    })
+      .then((res) => {
+        const userId = res.data.userId; 
+        window.location = "/display_posts/"+ userId;
+      })
+      .catch((err) => {
+        if (err.response.data) {
+          document.querySelector("#PasswoErrorMsg").innerHTML =
+            err.response.data.message;
+        }
+      });
+  };
+
   return (
     <div>
-      <HomeForm>
-        <Label htmlFor="email">Email</Label>
-        <HomeInput type="email" name="email" id="email" required />
-        <p id="emailErrorMsg">{/*Message d'erreur*/}</p>
-        <Label htmlFor="password">Mot de passe</Label>
-          <HomeInput type="password" name="password" id="password" required />
-          <p id="PasswoErrorMsg">{/*Message d'erreur*/}</p>
+      <HomeFormLogin action="" onSubmit={handleLogin} id="login_form">
+        <ErrorConnexionLogin id="PasswoErrorMsg">
+          {/*Message d'erreur*/}
+        </ErrorConnexionLogin>
+        <LabelLogin htmlFor="email">Email</LabelLogin>
+        <HomeInput
+          type="email"
+          name="email"
+          id="email"
+          onChange={(e) => setEmail(e.target.value)}
+          value={email}
+          required
+        />
+        <LabelLogin htmlFor="password">Mot de passe</LabelLogin>
+        <HomeInput
+          type="password"
+          name="password"
+          id="password"
+          onChange={(e) => setPassword(e.target.value)}
+          value={password}
+          required
+        />
         <div>
-          {/* <ButtonPasInscrit/> */}
-          <Button type="submit" value="LOGIN" />
+          <ButtonLogin type="submit" value="Vous connecter" />
           <ButtonFormChange
             type="button"
             value="Pas encore inscrit ? Cliquez ici "
@@ -31,9 +68,9 @@ function Login(props) {
             id="login"
           />
         </div>
-      </HomeForm>
+      </HomeFormLogin>
     </div>
   );
-}
+};
 
 export default Login;

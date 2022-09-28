@@ -1,82 +1,94 @@
 import { useEffect, useState } from "react";
-
-import delicateArch from "../assets/images/0158.JPG";
+import {useParams} from "react-router-dom"
+import axios from "axios";
+import PostForm from "../components/PostForm/postform";
 
 // importation du style
-import {ButtonCard,ButtonDiv,ButtonLikeDislike,CardPage,Card,MsgCard,LikeDiv,ImgDiv,
-  ImgP,ImgLoaded,Msg,MsgParagraph,IconDiv} from "../utils/style/stylepost";
+import {
+  ButtonCard,
+  ButtonDiv,
+  ButtonLikeDislike,
+  CardPage,
+  Card,
+  MsgCard,
+  LikeDiv,
+  ImgDiv,
+  ImgP,
+  ImgLoaded,
+  Msg,
+  MsgParagraph,
+  IconDiv,
+} from "../utils/style/stylepost";
 
 // importation des icones like et dislike
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faThumbsUp } from "@fortawesome/free-regular-svg-icons";
 import { faThumbsDown } from "@fortawesome/free-regular-svg-icons";
-
-import PostForm from "../components/PostForm/postform";
+import { faThumbsUp as solidThumbsUp } from "@fortawesome/free-solid-svg-icons";
+import { faThumbsDown as solidThumbsDown } from "@fortawesome/free-solid-svg-icons";
 
 function DisplayPosts() {
-  const current = new Date();
-  const date = `${current.getDate()}/${current.getMonth() + 1}/${current.getFullYear()}`;
-
-  const [postData, setPostData] = useState({});
+  const [postData, setPostData] = useState([]);
+  const { id } = useParams()
 
   useEffect(() => {
-    fetch("`http://localhost:3000/api/post`")
-    .then((response) => response.json())
-    .then((data) => {
-        setPostData(data);
+    axios
+      .get(`${process.env.REACT_APP_API_URL}post`)
+      .then((res) => {
+        setPostData(res.data);
       })
-    .catch((err) => console.log("Erreur : " + err));
-  }, []);  
-
-//   useEffect(() => {
-//     const url = "http://localhost:3000/api/post";
-//     const fetchData = async () => {
-//       try {
-//         const response = await fetch(url);
-//         const json = await response.json()
-//         console.log(json);
-//       } catch (error) {
-//         console.log("error", error);
-//       }
-//     };
-//     fetchData();
-// }, []);
+      .catch((e) => {
+        console.log(e.message);
+      });
+  }, []);
 
   return (
     <CardPage>
       <PostForm />
       {/* début Carte */}
-      <Card>
-        <ImgDiv>
-          <ImgLoaded id="photoCard" src={delicateArch} alt="" />
-          <ImgP id="nameCard">Pascale HOMET --- {date}</ImgP>
-        </ImgDiv>
-        <MsgCard>
-          <Msg id="msgCard">
-            <MsgParagraph>"{postData["text"]}"
-            </MsgParagraph>
-          </Msg>
-          <LikeDiv id="likeOrdilike">
-            <IconDiv id="like">
-              <ButtonLikeDislike /*onClick={this.}*/>
-                <FontAwesomeIcon icon={faThumbsUp} className="icon" />
-              </ButtonLikeDislike>
-            </IconDiv>
-            <IconDiv id="dislike">
-              <ButtonLikeDislike /*onClick={this.}*/>
-                <FontAwesomeIcon icon={faThumbsDown} className="icon" />
-              </ButtonLikeDislike>
-            </IconDiv>
-            <ButtonDiv>
-              <ButtonCard type="submit" value="Modifier" />
-              <ButtonCard type="submit" value="Supprimer" />
-            </ButtonDiv>
-          </LikeDiv>
-        </MsgCard>
-      </Card>
+      {postData.map((postElement) => (
+        <Card key={postElement._id}>
+          <ImgDiv>
+            <ImgLoaded id="photo" src={postElement.imageUrl} alt="" />
+            <ImgP id="nameCard">Pascale HOMET --- {/*date*/}</ImgP>
+          </ImgDiv>
+          <MsgCard>
+            <Msg id="msgCard">
+              <MsgParagraph>{postElement.text}</MsgParagraph>
+            </Msg>
+            <LikeDiv id="likeOrdilike">
+              <IconDiv id="like">
+                <ButtonLikeDislike /*onClick={this.}*/>
+                  <FontAwesomeIcon icon={faThumbsUp} className="icon-empty" />
+                  <FontAwesomeIcon icon={solidThumbsUp} className="icon-full" />
+                </ButtonLikeDislike>
+              </IconDiv>
+              <IconDiv id="dislike">
+                <ButtonLikeDislike /*onClick={this.}*/>
+                  <FontAwesomeIcon icon={faThumbsDown} className="icon-empty" />
+                  <FontAwesomeIcon
+                    icon={solidThumbsDown}
+                    className="icon-full"
+                  />
+                </ButtonLikeDislike>
+              </IconDiv>
+              <ButtonDiv>
+                <ButtonCard type="submit" value="Modifier" />
+                <ButtonCard type="submit" value="Supprimer" />
+              </ButtonDiv>
+            </LikeDiv>
+          </MsgCard>
+        </Card>
+      ))}
       {/* Fin carte */}
     </CardPage>
   );
 }
 
 export default DisplayPosts;
+
+{/* <ImgDiv> */}
+{/* <ImgLoaded id="photo" src={postElement.imageUrl} alt="" /> */}
+// {userData.map((userElement)=>(              
+  // <ImgP id="nameCard">Pascale HOMET --- {/*date*/}</ImgP>))}
+// </ImgDiv>

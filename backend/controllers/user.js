@@ -6,7 +6,7 @@ const User = require('../models/user')
 const jwt = require('jsonwebtoken');
 
 // Création d'un utilisateur
-exports.signup = (req, res, next) => {  
+exports.signin = (req, res, next) => {  
       bcrypt.hash(req.body.password, 10)    
     .then(hash => {
         const user = new User({
@@ -18,7 +18,7 @@ exports.signup = (req, res, next) => {
         })
       user.save()
         .then(() => res.status(201).json({ message: 'Utilisateur créé !' }))
-        .catch(error => res.status(400).json({ error }));
+        .catch(error => res.status(400).json({ message :"Email déjà utilisé" }));
     })
     .catch(error => res.status(500).json({ error }));
 };
@@ -27,12 +27,12 @@ exports.login = (req, res, next) => {
   User.findOne({ email: req.body.email })
       .then(user => {
           if (!user) {
-              return res.status(401).json({ message: 'Paire login/mot de passe incorrecte'});
+              return res.status(401).json({ message : "identifiant ou mot de passe inconnu" });
           }
           bcrypt.compare(req.body.password, user.password)
               .then(valid => {
                   if (!valid) {
-                      return res.status(401).json({ message: 'Paire login/mot de passe incorrecte' });
+                      return res.status(401).json({ message : "identifiant ou mot de passe inconnu" });
                   }
                   res.status(200).json({
                     message:'Connection réussie',
@@ -42,7 +42,7 @@ exports.login = (req, res, next) => {
                         { userId: user._id, role:user.role },
                           process.env.APP_SECRET,
                         { expiresIn: '24h' }
-                      ) 
+                      )
                   });
               })
               .catch(error => res.status(500).json({ error }));

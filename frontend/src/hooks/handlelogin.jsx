@@ -1,6 +1,6 @@
 import {useEffect} from "react"
 
-const HandleLogin = (e) => {
+export const HandleLogin = (e) => {
     e.preventDefault();
     useEffect(() => {
       fetch(`${process.env.REACT_APP_API_URL}/auth/login`)
@@ -11,5 +11,3 @@ const HandleLogin = (e) => {
       .catch((err) => console.log("Erreur : " + err));
     }, []);  
   };
-
-  export default HandleLogin;

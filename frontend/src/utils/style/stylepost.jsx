@@ -6,7 +6,7 @@ export const CardPage = styled.div`
   width: 60%;
   display: flex;
   flex-direction: column;
-  margin: 1% 25%;
+  margin: 1% auto;
 `;
 // Mise en page de la carte des posts API
 export const Card = styled.div`
@@ -16,7 +16,7 @@ export const Card = styled.div`
   margin-bottom: 5%;
   padding: 2%;
   border-radius: 20px;
-  box-shadow: 0px 0px 16px 9px ${colors.secondary};
+  box-shadow: 0px 0px 13px 9px ${colors.secondary};
 `;
 export const MsgCard = styled.div`
   display: flex;
@@ -39,38 +39,40 @@ export const ImgDiv = styled.div`
 export const ImgP = styled.p`
   font-size: 14px;
   letter-spacing: 1px;
-  padding-top: 2%;
+  margin-top: 4%;
+  margin-left: 4%;
 `;
 export const ImgLoaded = styled.img`
-  width: 80%;
-  margin-left: 4%;
+  width: 70%;
+  height: 170px;
+  object-fit: contain;
 `;
 export const Msg = styled.div`
   display: flex;
   height: 75%;
+  width: 100%;
   overflow-y: auto;
   border-radius: 20px;
+  box-shadow: -4px -3px 6px 1px ${colors.backgroundLight};
 `;
 export const MsgParagraph = styled.p`
   margin: 0;
   padding: 3%;
+  width: 100%;
 `;
 export const IconDiv = styled.div`
   width: 10%;
   height: 100%;
-  margin-top: 2%;
 `;
 // Bouton page DisplayPosts
 export const ButtonCard = styled.input`
   width: 25%;
-  height: 50px;
-  font-size: 2px;
+  height: 40px;
   color: ${colors.secondary};
-  margin-top: 1.5%;
   margin-left: 5%;
-  border-radius: 10%;
+  border-radius: 18px;
   border: none;
-  font-size: 20px;
+  font-size: 18px;
   background-color: ${colors.backgroundLight};
 `;
 export const ButtonDiv = styled.div`
