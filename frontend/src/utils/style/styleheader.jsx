@@ -27,7 +27,7 @@ export const HeaderNavLink = styled(Link)`
   font-size: 20px;
   letter-spacing: 3px;
   font-weight: bold;
-  &:hover{
-    color : ${colors.primary};
+  &:hover {
+    color: ${colors.primary};
   }
 `;

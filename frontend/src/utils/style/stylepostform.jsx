@@ -19,6 +19,13 @@ export const TextDiv = styled.div`
 `;
 export const Textarea = styled.textarea`
   width: 100%;
+  height: 5em;
   border-radius: 5px;
-  margin-bottom:1%;
+  margin-bottom: 1%;
+`;
+export const PhotoPath = styled.div`
+  width: 40%;
+  margin-left: -14%;
+  padding-left: 1%;
+  margin-top: 0.8%;
 `;

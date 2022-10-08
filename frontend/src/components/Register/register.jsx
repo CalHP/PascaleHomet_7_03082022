@@ -45,6 +45,7 @@ function Register(props) {
     nomError.innerHTML = "";
 
     if (
+      !validMail.test(email) ||
       !validPassword.test(password) ||
       password !== passwordconf ||
       !terms.checked ||
@@ -70,6 +71,9 @@ function Register(props) {
         nomError.innerHTML =
           "Caractères autorisés : tiret, minuscules, majuscules, 3 caractères minimum et 30 maximum";
       }
+      if (!validMail.test(email)) {
+        emailError.innerHTML = "Exemple email : prenom.nom@groupomania.fr";
+      }
     } else {
       await axios({
         method: "post",
@@ -91,7 +95,31 @@ function Register(props) {
             passwordConfError.innerHTML = res.data.errors.password;
           }
           alert("Vous êtes inscrit sur le réseau de Groupomania");
-          window.location = "/display_posts";
+          axios({
+            method: "post",
+            url: `${process.env.REACT_APP_API_URL}auth/login`,
+            data: { email: email, password: password },
+          })
+            .then((res) => {
+              const userId = res.data.userId;        
+              const role = res.data.role;
+              const token = res.data.token;
+              let identifiers = JSON.parse(localStorage.getItem("loginIdentifiers"));
+      
+              if(identifiers){
+                localStorage.clear();
+              }
+              identifiers = [];
+              identifiers.push(userId, role, token);
+              localStorage.setItem("loginIdentifiers", JSON.stringify(identifiers));
+              window.location = "/display_posts" ;
+            })
+            .catch((err) => {
+              if (err.response.data) {
+                document.querySelector("#PasswoErrorMsg").innerHTML =
+                  err.response.data.message;
+              }
+            });
         })
         .catch((err) => {
           if (err.response.data.message) {

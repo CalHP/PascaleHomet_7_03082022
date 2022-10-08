@@ -9,6 +9,10 @@ import {
   HeaderNavLink,
 } from "../../utils/style/styleheader";
 
+const Logout = () =>{
+  localStorage.clear();
+  window.location.href = "/"
+}
 export default function Header(props) {
   return (
     <HeaderDivImage>
@@ -18,7 +22,7 @@ export default function Header(props) {
       <HeaderNav>
         <HeaderNavUl>
           <HeaderNavLi>
-            <HeaderNavLink to="#" className={props.change}>
+            <HeaderNavLink to="#" onClick={Logout}>
               Déconnexion
             </HeaderNavLink>
           </HeaderNavLi>

@@ -23,8 +23,18 @@ const Login = (props) => {
       data: { email: email, password: password },
     })
       .then((res) => {
-        const userId = res.data.userId; 
-        window.location = "/display_posts/"+ userId;
+        const userId = res.data.userId;        
+        const role = res.data.role;
+        const token = res.data.token;
+        let identifiers = JSON.parse(localStorage.getItem("loginIdentifiers"));
+
+        if(identifiers){
+          localStorage.clear();
+        }
+        identifiers = [];
+        identifiers.push(userId, role, token);
+        localStorage.setItem("loginIdentifiers", JSON.stringify(identifiers));
+        window.location = "/display_posts" ;
       })
       .catch((err) => {
         if (err.response.data) {

@@ -40,7 +40,7 @@ export const ImgP = styled.p`
   font-size: 14px;
   letter-spacing: 1px;
   margin-top: 4%;
-  margin-left: 4%;
+  margin-left: 2%;
 `;
 export const ImgLoaded = styled.img`
   width: 70%;

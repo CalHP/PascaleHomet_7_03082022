@@ -1,11 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import ReactDOM from "react-dom/client";
 import "bootstrap/dist/css/bootstrap.css";
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route
-} from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import "./utils/style/style.css";
 
@@ -17,23 +13,22 @@ import DisplayPosts from "./pages/DisplayPosts";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
-if (window.location.pathname === "/")
-  root.render(
-    <Router>
-      <Header />
-      <Routes>
-        <Route path="/" element={<Home />}></Route>
-      </Routes>
-      <Footer />
-    </Router>
-  );
-else
-  root.render(
-    <Router>
-      <HeaderPost />
-      <Routes>
-        <Route path="/display_posts/:id" element={<DisplayPosts />}></Route>
-      </Routes>
-      <Footer />
-    </Router>
-  );
+function DisplayHeader() {
+
+  if ("loginIdentifiers" in localStorage) {
+    return <HeaderPost />;
+  } else {
+    return <Header />;
+  }
+}
+
+root.render(
+  <Router>
+    <DisplayHeader />
+    <Routes>
+      <Route path="/" element={<Home />}></Route>
+      <Route path="/display_posts" element={<DisplayPosts />}></Route>
+    </Routes>
+    <Footer />
+  </Router>
+);

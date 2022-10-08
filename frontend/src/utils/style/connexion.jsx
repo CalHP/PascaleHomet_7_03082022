@@ -66,7 +66,7 @@ export const HomeFormRegister = styled.form`
   margin: 0 5% 0 5%;
 `;
 export const ErrorConnexion = styled.p`
-  font-size: 1px;
+  font-size: 16px;
   color: white;
   font-weight: bold;
   letter-spacing: 2px;
