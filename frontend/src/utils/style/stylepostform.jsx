@@ -10,6 +10,16 @@ export const FormPage = styled.form`
   border-radius: 20px;
   box-shadow: 0px 0px 16px 6px ${colors.backgroundLight};
 `;
+export const FormDiv = styled.div`
+  display: flex;
+  margin-bottom:2%;
+  margin-left:-5%;
+`;
+export const ImgLoadedCreatePost = styled.img`
+  width: 70%;
+  height: 170px;
+  object-fit: contain;
+`;
 export const Buttondisplay = styled.div`
   display: flex;
   justify-content: space-around;
@@ -19,7 +29,6 @@ export const TextDiv = styled.div`
 `;
 export const Textarea = styled.textarea`
   width: 100%;
-  height: 5em;
   border-radius: 5px;
   margin-bottom: 1%;
 `;

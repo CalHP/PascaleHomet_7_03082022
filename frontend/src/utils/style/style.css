@@ -23,6 +23,9 @@ body {
 .dislike-full{
   color:#FD2D01;
 }
+#dislike{
+  margin-left:3%;
+}
 /* bouton de téléchargement de la photo */
 .parent-div {
   display: flex;

@@ -86,7 +86,6 @@ function Register(props) {
         },
       })
         .then((res) => {
-          console.log(res.data);
           if (res.data.errors) {
             prenomError.innerHTML = res.data.errors.prenom;
             nomError.innerHTML = res.data.errors.nom;
@@ -101,7 +100,7 @@ function Register(props) {
             data: { email: email, password: password },
           })
             .then((res) => {
-              const userId = res.data.userId;        
+              const user = res.data.user;        
               const role = res.data.role;
               const token = res.data.token;
               let identifiers = JSON.parse(localStorage.getItem("loginIdentifiers"));
@@ -110,7 +109,7 @@ function Register(props) {
                 localStorage.clear();
               }
               identifiers = [];
-              identifiers.push(userId, role, token);
+              identifiers.push(user, role, token);
               localStorage.setItem("loginIdentifiers", JSON.stringify(identifiers));
               window.location = "/display_posts" ;
             })

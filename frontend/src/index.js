@@ -14,7 +14,6 @@ import DisplayPosts from "./pages/DisplayPosts";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 function DisplayHeader() {
-
   if ("loginIdentifiers" in localStorage) {
     return <HeaderPost />;
   } else {

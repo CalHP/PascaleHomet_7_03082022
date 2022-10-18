@@ -3,6 +3,7 @@ const fs = require("fs");
 
 exports.getAllPosts = (req, res, next) => {
   Post.find()
+    .populate("user")
     .sort({ created_at: -1 })
     .then((posts) => {
       res.status(200).json(posts);
@@ -11,7 +12,7 @@ exports.getAllPosts = (req, res, next) => {
 };
 
 exports.getOnePost = (req, res, next) => {
-  Post.findOne({ _id: req.params.id })
+  Post.findOne({ _id: req.id })
     .then((posts) => res.status(200).json(posts))
     .catch((error) => res.status(404).json({ error }));
 };
@@ -21,15 +22,16 @@ exports.createPost = (req, res, next) => {
   console.log(req.file);
   const post = new Post({
     ...req.body,
-    userId: req.auth.userId,
+    user: req.auth.userId,
     imageUrl: `${req.protocol}://${req.get("host")}/images/${
       req.file.filename
     }`,
   });
   post
     .save()
-    .then(() => {
-      res.status(201).json({ message: "Post enregistré" });
+    .then((post) => {
+      // let sendpost = post.populate("user").execPopulate();
+      res.status(201).json({ message: "Post enregistré", post: post });
     })
     .catch((error) => {
       res.status(400).json({ error });
@@ -65,7 +67,7 @@ exports.modifyPost = (req, res, next) => {
 exports.deletePost = (req, res, next) => {
   Post.findOne({ _id: req.params.id })
     .then((post) => {
-      if (post.userId != req.auth.userId) {
+      if (post.user != req.auth.userId) {
         res.status(401).json({ message: "Not authorized" });
       } else {
         const filename = post.imageUrl.split("/images/")[1];

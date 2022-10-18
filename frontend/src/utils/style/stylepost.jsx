@@ -82,6 +82,10 @@ export const ButtonDiv = styled.div`
   justify-content: flex-end;
 `;
 export const ButtonLikeDislike = styled.button`
+  display: flex;
   background: none;
   border: none;
+`;
+export const LikeCount = styled.div`
+  padding-left: 14%;
 `;

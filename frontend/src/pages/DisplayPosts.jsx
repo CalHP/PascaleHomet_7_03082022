@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import PostForm from "../components/PostForm/postform";
 
-// importation du style
+/* importation du style */
 import {
   ButtonCard,
   ButtonDiv,
@@ -17,6 +17,7 @@ import {
   Msg,
   MsgParagraph,
   IconDiv,
+  LikeCount,
 } from "../utils/style/stylepost";
 
 // importation des icones like et dislike
@@ -26,12 +27,18 @@ import { faThumbsDown } from "@fortawesome/free-regular-svg-icons";
 import { faThumbsUp as solidThumbsUp } from "@fortawesome/free-solid-svg-icons";
 import { faThumbsDown as solidThumbsDown } from "@fortawesome/free-solid-svg-icons";
 
-function DisplayPosts() {
+function DisplayPosts(props) {
   const [postData, setPostData] = useState([]);
-  const [like, setLike] = useState();
-  const [dislike, setDislike] = useState();
-  const [currentPost, setCurrentPost] = useState();
+  const [countLike, setCountLike] = useState();
+  const [countDislike, setCountDislike] = useState();
+  // const [onePost, setOnePost] = useState([]);
 
+  let user = JSON.parse(localStorage.getItem("loginIdentifiers"));
+  let token = user[2];
+  let id = user[0];
+  let role = user[1];
+
+  /*Requête pour récupérer les post dans l'API */
   useEffect(() => {
     axios
       .get(`${process.env.REACT_APP_API_URL}post`)
@@ -43,38 +50,106 @@ function DisplayPosts() {
       });
   }, []);
 
+  /* Affichage de la date Version France */
   function getFrenchDate(date) {
     var postDate = new Date(date).toLocaleString().slice(0, 10);
     return postDate;
   }
-
-  const likeOrDislike = async (e) => {
+  /* Traitement des like et dislike*/
+  function likeOrDislike(e, postId) {
     e.preventDefault();
-    // const emptyLike = document.querySelector(".like-empty");
-    // const fullLike = document.querySelector(".like-full");
-    // const emptyDislike = document.querySelector(".dislike-empty");
-    // const fullDislike = document.querySelector(".dislike-full");
+    const emptyLike = document.querySelector(".like-empty");
+    const fullLike = document.querySelector(".like-full");
+    const emptyDislike = document.querySelector(".dislike-empty");
+    const fullDislike = document.querySelector(".dislike-full");
+
+    let likeordislikeform = new FormData();
+
     axios({
       method: "post",
-      url: `${process.env.REACT_APP_API_URL}/:id/like`,
-      data: {  },
+      url: `${process.env.REACT_APP_API_URL}/${postId}/like`,
+      // data: {},
     });
-  };
-  async function modifyPost (e) {
-    e.preventDefault();
-
   }
 
+  /* suppression d'un post*/
+  async function deletePost(e, idPost, index) {
+    e.preventDefault();
+
+    let deleteForm = new FormData();
+    deleteForm.append("userId", id);
+
+    await axios({
+      method: "delete",
+      url: `${process.env.REACT_APP_API_URL}post/${idPost}`,
+      data: deleteForm,
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    })
+      .then((res) => {
+        console.log(res);
+        if (res.data.errors) {
+          console.log(res.data.errors);
+        } else {
+          setPostData(postData => postData.filter((item, i) => i !== index));
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+  /* modification d'un post */
+  async function modifyPost(e, idPost) {
+    e.preventDefault();
+
+    await axios({
+      method: "get",
+      url: `${process.env.REACT_APP_API_URL}post/${idPost}`,
+    })
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((e) => {
+        console.log(e.message);
+      });
+  }
+
+  // .catch((e) => {
+  //   console.log(e.message);
+  // });
+  // await axios({
+  //   method: "put",
+  //   url: `${process.env.REACT_APP_API_URL}post`,
+  //   data: formdata,
+  //   headers: {
+  //     Authorization: "Bearer " + token,
+  //     "Content-Type": "multipart/form-data",
+  //   },
+  // })
+  //   .then((res) => {
+  //     console.log(res);
+  //     if (res.data.errors) {
+  //       console.log(res.data.errors);
+  //     }
+  //   })
+  //   .catch((err) => {
+  //     console.log(err);
+  //   });
+  // }
+
+  /* Affichage de la page des Post */
   return (
     <CardPage>
-      <PostForm />
+      <PostForm postData={postData} setPostData={setPostData} />
       {/* début Carte */}
-      {postData.map((postElement) => (
-        <Card key={postElement._id}>
+      {postData.map((postElement, index) => (
+        <Card key={postElement._id} id="card">
           <ImgDiv>
             <ImgLoaded id="photo" src={postElement.imageUrl} alt="" />
             <ImgP id="nameCard">
-              Pascale HOMET le {getFrenchDate(postElement.created_at)}
+              {postElement.user.firstname} {postElement.user.name} le{" "}
+              {getFrenchDate(postElement.created_at)}
             </ImgP>
           </ImgDiv>
           <MsgCard>
@@ -83,7 +158,11 @@ function DisplayPosts() {
             </Msg>
             <LikeDiv id="likeOrdislike">
               <IconDiv id="like">
-                <ButtonLikeDislike onClick={likeOrDislike}>
+                <ButtonLikeDislike
+                  onClick={(e) => {
+                    likeOrDislike(e, postElement._id);
+                  }}
+                >
                   <FontAwesomeIcon
                     icon={faThumbsUp}
                     className="icon-empty like-empty"
@@ -92,10 +171,15 @@ function DisplayPosts() {
                     icon={solidThumbsUp}
                     className="icon-full like-full"
                   />
+                  <LikeCount> {countLike} </LikeCount>
                 </ButtonLikeDislike>
               </IconDiv>
               <IconDiv id="dislike">
-                <ButtonLikeDislike onClick={likeOrDislike}>
+                <ButtonLikeDislike
+                  onClick={(e) => {
+                    likeOrDislike(e, postElement._id);
+                  }}
+                >
                   <FontAwesomeIcon
                     icon={faThumbsDown}
                     className="icon-empty dislike-empty"
@@ -104,12 +188,27 @@ function DisplayPosts() {
                     icon={solidThumbsDown}
                     className="icon-full dislike-full"
                   />
+                  <LikeCount> {countDislike} </LikeCount>
                 </ButtonLikeDislike>
               </IconDiv>
-              <ButtonDiv>
-                <ButtonCard type="submit" value="Modifier" onClick = {modifyPost}  />
-                <ButtonCard type="submit" value="Supprimer" />
-              </ButtonDiv>
+              {(postElement.user._id === id || role === true) && (
+                <ButtonDiv>
+                  <ButtonCard
+                    type="submit"
+                    value="Modifier"
+                    onClick={(e) => {
+                      modifyPost(e, postElement._id);
+                    }}
+                  />
+                  <ButtonCard
+                    type="submit"
+                    value="Supprimer"
+                    onClick={(e) => {
+                      deletePost(e, postElement._id, index);
+                    }}
+                  />
+                </ButtonDiv>
+              )}
             </LikeDiv>
           </MsgCard>
         </Card>
@@ -120,49 +219,3 @@ function DisplayPosts() {
 }
 
 export default DisplayPosts;
-
-// {postData.map((postElement) => (
-//   <Card key={postElement._id}>
-//     <ImgDiv>
-//       <ImgLoaded id="photo" src={postElement.imageUrl} alt="" />
-//       <ImgP id="nameCard">
-//         Pascale HOMET  le  {getFrenchDate(postElement.created_at)}
-//       </ImgP>
-//     </ImgDiv>
-//     <MsgCard>
-//       <Msg id="msgCard">
-//         <MsgParagraph>{postElement.text}</MsgParagraph>
-//       </Msg>
-//       <LikeDiv id="likeOrdislike">
-//         <IconDiv id="like">
-//           <ButtonLikeDislike onClick={like}>
-//             <FontAwesomeIcon
-//               icon={faThumbsUp}
-//               className="icon-empty like-empty"
-//             />
-//             <FontAwesomeIcon
-//               icon={solidThumbsUp}
-//               className="icon-full like-full"
-//             />
-//           </ButtonLikeDislike>
-//         </IconDiv>
-//         <IconDiv id="dislike">
-//           <ButtonLikeDislike /*onClick={this.}*/>
-//             <FontAwesomeIcon
-//               icon={faThumbsDown}
-//               className="icon-empty dislike-empty"
-//             />
-//             <FontAwesomeIcon
-//               icon={solidThumbsDown}
-//               className="icon-full dislike-full"
-//             />
-//           </ButtonLikeDislike>
-//         </IconDiv>
-//         <ButtonDiv>
-//           <ButtonCard type="submit" value="Modifier" />
-//           <ButtonCard type="submit" value="Supprimer" />
-//         </ButtonDiv>
-//       </LikeDiv>
-//     </MsgCard>
-//   </Card>
-// ))}
