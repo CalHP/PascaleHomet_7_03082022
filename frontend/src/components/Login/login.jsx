@@ -27,16 +27,13 @@ const Login = (props) => {
         const role = res.data.role;
         const token = res.data.token;
         let identifiers = JSON.parse(localStorage.getItem("loginIdentifiers"));
-        // if(localStorage.getItem("token")){
-        //   localStorage.clear();
-        // }
+
         if(identifiers){
           localStorage.clear();
         }
         identifiers = [];
         identifiers.push(userId, role, token);
         localStorage.setItem("loginIdentifiers", JSON.stringify(identifiers));
-        // localStorage.setItem("token", token)
         window.location = "/display_posts" ;
       })
       .catch((err) => {

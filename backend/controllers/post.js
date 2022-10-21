@@ -18,8 +18,6 @@ exports.getOnePost = (req, res, next) => {
 };
 
 exports.createPost = (req, res, next) => {
-  console.log(req.body);
-  console.log(req.file);
   const post = new Post({
     ...req.body,
     user: req.auth.userId,
@@ -30,14 +28,13 @@ exports.createPost = (req, res, next) => {
   post
     .save()
     .then((post) => {
-      // let sendpost = post.populate("user").execPopulate();
       res.status(201).json({ message: "Post enregistré", post: post });
     })
     .catch((error) => {
       res.status(400).json({ error });
     });
 };
-
+// Post.populate("user").execPopulate();
 exports.modifyPost = (req, res, next) => {
   const postObject = req.file
     ? {

@@ -1,7 +1,7 @@
 import { Button } from "react-bootstrap";
 import { useState } from "react";
 import axios from "axios";
-import photo from "../../assets/images/team-work-concept-groupe-de-mains-diverses-ensemble-proces-croisé-132757663.jpg";
+import photo from "../../assets/images/photo_par_defaut.png";
 
 import {
   FormPage,
@@ -24,7 +24,7 @@ export default function PostForm({ postData, setPostData }) {
     let user = JSON.parse(localStorage.getItem("loginIdentifiers"));
     let token = user[2];
     let id = user[0];
-
+    
     let formdata = new FormData();
     formdata.append("user", id);
     formdata.append("text", text);
@@ -43,9 +43,12 @@ export default function PostForm({ postData, setPostData }) {
         if (res.data.errors) {
           console.log(res.data.errors);
         } else {
-          // console.log(res.data);
+          
           // window.location.reload();
           setPostData((postData) => [res.data.post, ...postData]);
+          setImage(null);
+          setImageUrl(photo);
+          document.querySelector("#textPostForm").value = "";
         }
       })
       .catch((err) => {
@@ -53,24 +56,23 @@ export default function PostForm({ postData, setPostData }) {
       });
   };
 
-const uploadImage= async (e, target) => {
-  e.preventDefault();
-  setImage(target);
-  setImageUrl(URL.createObjectURL(target))
-}
+  const uploadImage = async (e, target) => {
+    e.preventDefault();
+    // let defaultFile =new File( [photo.slice(14)], "photo", { webkitRelativePath: "", size: 503582, type: "image/png"} );
+    
+    setImage(target);
+    setImageUrl(URL.createObjectURL(target));
+  };
 
   return (
     <FormPage action="" onSubmit={submitPost}>
       <TextDiv>
         <FormDiv>
-          <ImgLoadedCreatePost
-            id="photo"
-            src={imageUrl}
-            alt=""
-          />
+          <ImgLoadedCreatePost id="photo" src={imageUrl} alt="" />
           <Textarea
             placeholder="Postez votre message"
             onChange={(e) => setText(e.target.value)}
+            id="textPostForm"
             required
           />
         </FormDiv>
@@ -83,6 +85,7 @@ const uploadImage= async (e, target) => {
               accept="image/*"
               onChange={(e) => uploadImage(e, e.target.files[0])}
               className="img_postform"
+              required
             />
           </div>
           <PhotoPath>{image ? image.name : ""} </PhotoPath>

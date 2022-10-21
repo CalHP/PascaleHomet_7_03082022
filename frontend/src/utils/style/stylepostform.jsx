@@ -2,6 +2,7 @@ import styled from "styled-components";
 import colors from "../../utils/style/colors";
 
 export const FormPage = styled.form`
+  overflow:hidden;
   display: flex;
   flex-direction: column;
   margin-bottom: 5%;
@@ -12,8 +13,9 @@ export const FormPage = styled.form`
 `;
 export const FormDiv = styled.div`
   display: flex;
-  margin-bottom:2%;
-  margin-left:-5%;
+  justify-content: space-around;
+  margin-bottom: 2%;
+  margin-left: -5%;
 `;
 export const ImgLoadedCreatePost = styled.img`
   width: 70%;

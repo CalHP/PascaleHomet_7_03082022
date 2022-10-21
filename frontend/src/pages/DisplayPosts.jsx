@@ -92,7 +92,7 @@ function DisplayPosts(props) {
         if (res.data.errors) {
           console.log(res.data.errors);
         } else {
-          setPostData(postData => postData.filter((item, i) => i !== index));
+          setPostData((postData) => postData.filter((item, i) => i !== index));
         }
       })
       .catch((err) => {
@@ -102,41 +102,8 @@ function DisplayPosts(props) {
   /* modification d'un post */
   async function modifyPost(e, idPost) {
     e.preventDefault();
-
-    await axios({
-      method: "get",
-      url: `${process.env.REACT_APP_API_URL}post/${idPost}`,
-    })
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((e) => {
-        console.log(e.message);
-      });
+    window.location = "/modify_post/" + idPost;
   }
-
-  // .catch((e) => {
-  //   console.log(e.message);
-  // });
-  // await axios({
-  //   method: "put",
-  //   url: `${process.env.REACT_APP_API_URL}post`,
-  //   data: formdata,
-  //   headers: {
-  //     Authorization: "Bearer " + token,
-  //     "Content-Type": "multipart/form-data",
-  //   },
-  // })
-  //   .then((res) => {
-  //     console.log(res);
-  //     if (res.data.errors) {
-  //       console.log(res.data.errors);
-  //     }
-  //   })
-  //   .catch((err) => {
-  //     console.log(err);
-  //   });
-  // }
 
   /* Affichage de la page des Post */
   return (
@@ -191,7 +158,7 @@ function DisplayPosts(props) {
                   <LikeCount> {countDislike} </LikeCount>
                 </ButtonLikeDislike>
               </IconDiv>
-              {(postElement.user._id === id || role === true) && (
+              {(postElement.user._id === id || role === true ) && (
                 <ButtonDiv>
                   <ButtonCard
                     type="submit"

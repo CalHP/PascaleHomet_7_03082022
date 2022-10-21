@@ -10,6 +10,7 @@ import HeaderPost from "./components/Header/header_deconnexion";
 import Home from "./pages/Home";
 import Footer from "./components/Footer/footer";
 import DisplayPosts from "./pages/DisplayPosts";
+import ModifyPost from "./pages/ModifyPost";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
@@ -27,6 +28,7 @@ root.render(
     <Routes>
       <Route path="/" element={<Home />}></Route>
       <Route path="/display_posts" element={<DisplayPosts />}></Route>
+      <Route path="/modify_post/:id" element = {<ModifyPost/>}></Route>
     </Routes>
     <Footer />
   </Router>
