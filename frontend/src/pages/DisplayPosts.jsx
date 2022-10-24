@@ -111,7 +111,7 @@ function DisplayPosts(props) {
       <PostForm postData={postData} setPostData={setPostData} />
       {/* début Carte */}
       {postData.map((postElement, index) => (
-        <Card key={postElement._id} id="card">
+        <Card key={index} id="card">
           <ImgDiv>
             <ImgLoaded id="photo" src={postElement.imageUrl} alt="" />
             <ImgP id="nameCard">

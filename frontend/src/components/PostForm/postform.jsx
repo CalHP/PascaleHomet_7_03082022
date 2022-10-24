@@ -11,6 +11,7 @@ import {
   PhotoPath,
   FormDiv,
   ImgLoadedCreatePost,
+  DivImgLegende
 } from "../../utils/style/stylepostform";
 
 export default function PostForm({ postData, setPostData }) {
@@ -24,7 +25,7 @@ export default function PostForm({ postData, setPostData }) {
     let user = JSON.parse(localStorage.getItem("loginIdentifiers"));
     let token = user[2];
     let id = user[0];
-    
+
     let formdata = new FormData();
     formdata.append("user", id);
     formdata.append("text", text);
@@ -43,9 +44,8 @@ export default function PostForm({ postData, setPostData }) {
         if (res.data.errors) {
           console.log(res.data.errors);
         } else {
-          
-          // window.location.reload();
-          setPostData((postData) => [res.data.post, ...postData]);
+          window.location.reload();
+          // setPostData((postData) => [res.data.post, ...postData]);
           setImage(null);
           setImageUrl(photo);
           document.querySelector("#textPostForm").value = "";
@@ -59,7 +59,7 @@ export default function PostForm({ postData, setPostData }) {
   const uploadImage = async (e, target) => {
     e.preventDefault();
     // let defaultFile =new File( [photo.slice(14)], "photo", { webkitRelativePath: "", size: 503582, type: "image/png"} );
-    
+
     setImage(target);
     setImageUrl(URL.createObjectURL(target));
   };
@@ -68,7 +68,10 @@ export default function PostForm({ postData, setPostData }) {
     <FormPage action="" onSubmit={submitPost}>
       <TextDiv>
         <FormDiv>
-          <ImgLoadedCreatePost id="photo" src={imageUrl} alt="" />
+          <DivImgLegende>
+            <ImgLoadedCreatePost id="photo" src={imageUrl} alt="" />
+            <PhotoPath>{image ? image.name : ""} </PhotoPath>
+          </DivImgLegende>
           <Textarea
             placeholder="Postez votre message"
             onChange={(e) => setText(e.target.value)}
@@ -88,7 +91,6 @@ export default function PostForm({ postData, setPostData }) {
               required
             />
           </div>
-          <PhotoPath>{image ? image.name : ""} </PhotoPath>
           <Button type="submit" className="btn">
             Valider
           </Button>

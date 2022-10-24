@@ -12,8 +12,8 @@ exports.getAllPosts = (req, res, next) => {
 };
 
 exports.getOnePost = (req, res, next) => {
-  Post.findOne({ _id: req.id })
-    .then((posts) => res.status(200).json(posts))
+  Post.findOne({ _id: req.params.id })
+    .then((post) => res.status(200).json(post))
     .catch((error) => res.status(404).json({ error }));
 };
 
@@ -48,7 +48,7 @@ exports.modifyPost = (req, res, next) => {
   delete postObject._userId;
   Post.findOne({ _id: req.params.id })
     .then((post) => {
-      if (post.userId != req.auth.userId && req.auth.role == false) {
+      if (post.user != req.auth.userId) {
         res.status(401).json({ message: "Not authorized" });
       } else {
         Post.updateOne({ _id: req.params.id }, { ...postObject })
@@ -64,8 +64,8 @@ exports.modifyPost = (req, res, next) => {
 exports.deletePost = (req, res, next) => {
   Post.findOne({ _id: req.params.id })
     .then((post) => {
-      if (post.user != req.auth.userId) {
-        res.status(401).json({ message: "Not authorized" });
+        if (post.user != req.auth.userId) {
+          res.status(401).json({ message: "Not authorized" });
       } else {
         const filename = post.imageUrl.split("/images/")[1];
         fs.unlink(`images/${filename}`, () => {

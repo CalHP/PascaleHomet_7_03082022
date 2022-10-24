@@ -1,5 +1,5 @@
 import { Button } from "react-bootstrap";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import photo from "../assets/images/photo_par_defaut.png";
@@ -27,29 +27,23 @@ export default function ModifyPost() {
   let id = params.id;
 
   let user = JSON.parse(localStorage.getItem("loginIdentifiers"));
-  // let token = user[2];
+  let token = user[2];
   let idUser = user[0];
+  let role = user[1];
 
   /**** Requête pour récupérer le post à modifier **********/
-  async function fetchData() {
-    let modifyForm = new FormData();
-    modifyForm.append("id", id);
-
-    await axios({
-      method: "get",
-      url: `${process.env.REACT_APP_API_URL}post/${id}`,
-      data: modifyForm,
-    })
+  useEffect(() => {
+    axios
+      .get(`${process.env.REACT_APP_API_URL}post/${id}`)
       .then((res) => {
-        console.log(res);
-        setOnePostData(res.data);
+        setOnePostData([res.data]);
+        setImageUrl(res.data.imageUrl);
+        setText(res.data.text);
       })
       .catch((e) => {
         console.log(e.message);
       });
-  }
-
-fetchData();
+  }, [id]);
 
   const submitPost = async (e) => {
     e.preventDefault();
@@ -57,32 +51,30 @@ fetchData();
     let formdata = new FormData();
     formdata.append("user", idUser);
     formdata.append("text", text);
-    formdata.append("image", image);
+    formdata.append("file", image);
 
-    // await axios({
-    //   method: "post",
-    //   url: `${process.env.REACT_APP_API_URL}post`,
-    //   data: formdata,
-    //   headers: {
-    //     Authorization: "Bearer " + token,
-    //     "Content-Type": "multipart/form-data",
-    //   },
-    // })
-    //   .then((res) => {
-    //     if (res.data.errors) {
-    //       console.log(res.data.errors);
-    //     } else {
-    //       console.log(res.data);
-    //       // window.location.reload();
-    //       setPostData((postData) => [res.data.post, ...postData]);
-    //       setImage(null);
-    //       setImageUrl(photo);
-    //       document.querySelector("#textPostForm").value = "";
-    //     }
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
+    await axios({
+      method: "put",
+      url: `${process.env.REACT_APP_API_URL}modify_post/${id}`,
+      data: formdata,
+      headers: {
+        Authorization: "Bearer " + token,
+        "Content-Type": "multipart/form-data",
+      },
+    })
+      .then((res) => {
+        if (res.data.errors) {
+          console.log('coucou 1')
+          console.log(res.data.errors);
+        } else {
+          console.log(res.data);
+          setOnePostData((onePostData) => [res.data.post, ...onePostData]);
+        }
+      })
+      .catch((err) => {
+        console.log('coucou 2')
+        console.log(err);
+      });
   };
 
   const uploadImage = async (e, target) => {
@@ -94,32 +86,37 @@ fetchData();
 
   return (
     <FormModifyPage action="" onSubmit={submitPost}>
-      <TextDiv>
-        <FormDiv>
-          <ImgLoadedCreatePost id="photo" src={imageUrl} alt="" />
-          <TextareaModifyPage
-            onChange={(e) => setText(e.target.value)}
-            id="textPostForm"
-            required
-          />
-        </FormDiv>
-        <Buttondisplay>
-          <div className="parent-div">
-            <button className="btn-upload">Changer la photo ?</button>
-            <input
-              type="file"
-              name="upfile"
-              accept="image/*"
-              onChange={(e) => uploadImage(e, e.target.files[0])}
-              className="img_postform"
+      {/* début Carte */}
+      {onePostData.map((onePost, index) => (
+        <TextDiv key={index}>
+          <FormDiv>
+            <ImgLoadedCreatePost id="photo" src={imageUrl} alt="" />
+            <TextareaModifyPage
+              onChange={(e) => setText(e.target.value)}
+              id="textPostForm"
+              defaultValue={text}
+              required
             />
-          </div>
-          <PhotoPath>{image ? image.name : ""} </PhotoPath>
-          <Button type="submit" className="btn">
-            Modifier
-          </Button>
-        </Buttondisplay>
-      </TextDiv>
+          </FormDiv>
+          <Buttondisplay>
+            <div className="parent-div">
+              <button className="btn-upload">Changer la photo ?</button>
+              <input
+                type="file"
+                name="upfile"
+                accept="image/*"
+                onChange={(e) => uploadImage(e, e.target.files[0])}
+                className="img_postform"
+              />
+            </div>
+            <PhotoPath>{image ? image.name : ""} </PhotoPath>
+            <Button type="submit" className="btn">
+              Modifier
+            </Button>
+          </Buttondisplay>
+        </TextDiv>
+      ))}
+      {/* Fin carte */}
     </FormModifyPage>
   );
 }

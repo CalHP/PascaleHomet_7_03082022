@@ -10,10 +10,15 @@ export const FormModifyPage = styled.form`
   justify-content: space-between;
   border-radius: 20px;
   box-shadow: 0px 0px 16px 6px ${colors.backgroundLight};
+  @media (max-width: 1024px) {
+    margin-top: 12%;
+    margin-bottom: 12%;
+  }
 `;
 export const TextareaModifyPage = styled.textarea`
   box-shadow: 0px 0px 16px 6px ${colors.backgroundLight};
   width: 100%;
   border-radius: 5px;
   margin-bottom: 1%;
+  padding:1%;
 `;
