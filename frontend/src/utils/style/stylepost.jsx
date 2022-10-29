@@ -31,27 +31,37 @@ export const MsgCard = styled.div`
   border-radius: 20px;
   width: 60%;
 `;
-export const LikeDiv = styled.div`
+export const LikeButtonDiv = styled.div`
   width: 100%;
   display: flex;
   height: 20%;
+  @media (max-width: 768px) {
+    margin-top: -26%;
+  }
+`;
+export const DisplayLikeDiv = styled.div`
+  display: flex;
+  width: 45%;
 `;
 export const ImgDiv = styled.div`
   display: flex;
   justify-content: space-around;
   flex-direction: column;
   width: 38%;
+  @media (max-width: 768px) {
+    height: 10%;
+  }
 `;
 export const ImgP = styled.p`
   font-size: 14px;
   letter-spacing: 1px;
   margin-top: 4%;
   margin-left: 2%;
-  @media (max-width: 660px) {
-    font-size: 10px;
+  @media (max-width: 768px) {
+    font-size: 12px;
   }
   @media (max-width: 454px) {
-    width: 100%;
+    width: 105%;
     margin: 0;
     height: 33px;
     margin-left: -2%;
@@ -62,9 +72,10 @@ export const ImgLoaded = styled.img`
   height: 170px;
   object-fit: contain;
   @media (max-width: 454px) {
-    width: 46%;
+    width: 60%;
     margin-left: 15%;
     margin-top: 5%;
+    height: 100%;
   }
 `;
 export const Msg = styled.div`
@@ -74,8 +85,8 @@ export const Msg = styled.div`
   overflow-x: hidden;
   border-radius: 20px;
   box-shadow: -4px -3px 6px 1px ${colors.backgroundLight};
-  @media (max-width: 660px) {
-    height: 160px;
+  @media (max-width: 768px) {
+    height: 60%;
   }
   @media (max-width: 454px) {
     height: 100px;
@@ -88,20 +99,19 @@ export const MsgParagraph = styled.p`
   padding: 3%;
   width: 100%;
   @media (max-width: 454px) {
-    font-size: 14px;
+    font-size: 12px;
   }
 `;
 export const IconDiv = styled.div`
-  width: 10%;
   height: 100%;
   @media (max-width: 454px) {
-    margin-right: 3%;
+    width: 41%;
   }
 `;
 // Bouton page DisplayPosts
-export const ButtonCard = styled.input`
-  width: 25%;
-  height: 40px;
+export const ButtonCard = styled.button`
+  width: 32%;
+  height: 45px;
   color: ${colors.secondary};
   margin-left: 5%;
   border-radius: 18px;
@@ -110,15 +120,9 @@ export const ButtonCard = styled.input`
   background-color: ${colors.backgroundLight};
   @media (max-width: 768px) {
     font-size: 15px;
-    width: 26%;
-  }
-  @media (max-width: 660px) {
-    font-size: 13px;
-    width: 26%;
-    font-weight: bold;
   }
   @media (max-width: 454px) {
-    font-size: 12px;
+    font-size: 18px;
     width: 34%;
     border-radius: 10px;
     padding: 0;
@@ -136,7 +140,16 @@ export const ButtonLikeDislike = styled.button`
   display: flex;
   background: none;
   border: none;
+  width: 50px;
 `;
 export const LikeCount = styled.div`
-  padding-left: 14%;
+  padding-left: 26%;
+  @media (max-width: 768px) {
+    font-size: 14px;
+    margin-top: 14%;
+  }
+  @media (max-width: 454px) {
+    font-size: 13px;
+    margin-top: 4%;
+  }
 `;

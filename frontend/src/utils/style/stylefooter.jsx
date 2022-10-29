@@ -6,6 +6,10 @@ export const FooterDiv = styled.div`
     color:${colors.secondary};
     font-weight:bold;
     font-size:18px;
+    height: 51px;
+    @media (max-width: 768px) {
+        height: 38px;
+      }
 `
 export const FooterUl = styled.ul`
 display:flex;

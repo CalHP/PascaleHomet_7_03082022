@@ -44,11 +44,11 @@ export default function PostForm({ postData, setPostData }) {
         if (res.data.errors) {
           console.log(res.data.errors);
         } else {
-          window.location.reload();
           // setPostData((postData) => [res.data.post, ...postData]);
           setImage(null);
           setImageUrl(photo);
           document.querySelector("#textPostForm").value = "";
+          window.location.reload();
         }
       })
       .catch((err) => {
@@ -58,7 +58,6 @@ export default function PostForm({ postData, setPostData }) {
 
   const uploadImage = async (e, target) => {
     e.preventDefault();
-    // let defaultFile =new File( [photo.slice(14)], "photo", { webkitRelativePath: "", size: 503582, type: "image/png"} );
 
     setImage(target);
     setImageUrl(URL.createObjectURL(target));

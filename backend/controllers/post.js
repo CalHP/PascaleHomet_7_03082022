@@ -34,11 +34,11 @@ exports.createPost = (req, res, next) => {
       res.status(400).json({ error });
     });
 };
-// Post.populate("user").execPopulate();
+/*Post.populate("user").execPopulate();*/
 exports.modifyPost = (req, res, next) => {
   const postObject = req.file
     ? {
-        ...JSON.parse(req.body.post),
+        ...req.body,
         imageUrl: `${req.protocol}://${req.get("host")}/images/${
           req.file.filename
         }`,
@@ -51,9 +51,12 @@ exports.modifyPost = (req, res, next) => {
       if (post.user != req.auth.userId) {
         res.status(401).json({ message: "Not authorized" });
       } else {
-        Post.updateOne({ _id: req.params.id }, { ...postObject })
-          .then(() => res.status(200).json({ message: "Objet modifié!" }))
-          .catch((error) => res.status(401).json({ error }));
+        const filename = post.imageUrl.split("/images/")[1];
+        fs.unlink(`images/${filename}`, () =>
+          Post.updateOne({ _id: req.params.id }, { ...postObject })
+            .then(() => res.status(200).json({ message: "Objet modifié!" }))
+            .catch((error) => res.status(401).json({ error }))
+        );
       }
     })
     .catch((error) => {
@@ -64,8 +67,17 @@ exports.modifyPost = (req, res, next) => {
 exports.deletePost = (req, res, next) => {
   Post.findOne({ _id: req.params.id })
     .then((post) => {
-        if (post.user != req.auth.userId) {
-          res.status(401).json({ message: "Not authorized" });
+      if (req.auth.role === true) {
+        const filename = post.imageUrl.split("/images/")[1];
+        fs.unlink(`images/${filename}`, () => {
+          Post.deleteOne({ _id: req.params.id })
+            .then(() => {
+              res.status(200).json({ message: "Objetsupprimé !" });
+            })
+            .catch((error) => res.status(401).json({ error }));
+        });
+      } else if (post.user != req.auth.userId) {
+        res.status(401).json({ message: "Not authorized" });
       } else {
         const filename = post.imageUrl.split("/images/")[1];
         fs.unlink(`images/${filename}`, () => {

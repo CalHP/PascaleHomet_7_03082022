@@ -8,6 +8,7 @@ import {
   LabelLogin,
   ButtonFormChange,
   ErrorConnexionLogin,
+  ConnexionDiv
 } from "../../utils/style/connexion";
 
 const Login = (props) => {
@@ -68,7 +69,7 @@ const Login = (props) => {
           value={password}
           required
         />
-        <div>
+        <ConnexionDiv>
           <ButtonLogin type="submit" value="Vous connecter" />
           <ButtonFormChange
             type="button"
@@ -77,7 +78,7 @@ const Login = (props) => {
             onClick={props.change}
             id="login"
           />
-        </div>
+        </ConnexionDiv>
       </HomeFormLogin>
     </div>
   );

@@ -3,7 +3,7 @@ import axios from "axios";
 
 import {
   HomeFormRegister,
-  HomeInput,
+  HomeInputRegister,
   ButtonRegister,
   LabelRegister,
   ButtonFormChange,
@@ -12,6 +12,7 @@ import {
   ErrorConnexion,
   FormDisplayDiv,
   LabelDisplayDiv,
+  ButtonRegisterDiv
 } from "../../utils/style/connexion";
 
 function Register(props) {
@@ -134,7 +135,7 @@ function Register(props) {
           <FormDisplayDiv>
             <LabelDisplayDiv>
               <LabelRegister htmlFor="prenom">Prénom</LabelRegister>
-              <HomeInput
+              <HomeInputRegister
                 type="text"
                 name="prenom"
                 id="prenom"
@@ -146,7 +147,7 @@ function Register(props) {
                 {/*Message d'erreur*/}
               </ErrorConnexion>
               <LabelRegister htmlFor="nom">Nom</LabelRegister>
-              <HomeInput
+              <HomeInputRegister
                 type="text"
                 name="nom"
                 id="nom"
@@ -160,7 +161,7 @@ function Register(props) {
             </LabelDisplayDiv>
             <LabelDisplayDiv>
               <LabelRegister htmlFor="email">Email</LabelRegister>
-              <HomeInput
+              <HomeInputRegister
                 type="email"
                 name="email"
                 id="email"
@@ -172,7 +173,7 @@ function Register(props) {
                 {/*Message d'erreur*/}
               </ErrorConnexion>
               <LabelRegister htmlFor="password">Mot de passe</LabelRegister>
-              <HomeInput
+              <HomeInputRegister
                 type="password"
                 name="password"
                 id="password"
@@ -186,7 +187,7 @@ function Register(props) {
               <LabelRegister htmlFor="passwordconf">
                 Confirmer votre mot de passe
               </LabelRegister>
-              <HomeInput
+              <HomeInputRegister
                 type="password"
                 name="password-confirm"
                 id="password-confirm"
@@ -210,7 +211,7 @@ function Register(props) {
             </LabelTerms>
             <ErrorConnexion className="terms errors"></ErrorConnexion>
           </DivCheckbox>
-          <div>
+          <ButtonRegisterDiv>
             <ButtonRegister type="submit" value="Vous inscrire" />
             <ButtonFormChange
               type="button"
@@ -219,7 +220,7 @@ function Register(props) {
               onClick={props.change}
               id="register"
             />
-          </div>
+          </ButtonRegisterDiv>
         </HomeFormRegister>
       </div>
     </div>

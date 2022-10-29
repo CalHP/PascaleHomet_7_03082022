@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import React from "react";
 import axios from "axios";
 import PostForm from "../components/PostForm/postform";
 
@@ -10,7 +11,7 @@ import {
   CardPage,
   Card,
   MsgCard,
-  LikeDiv,
+  LikeButtonDiv,
   ImgDiv,
   ImgP,
   ImgLoaded,
@@ -18,24 +19,26 @@ import {
   MsgParagraph,
   IconDiv,
   LikeCount,
+  DisplayLikeDiv
 } from "../utils/style/stylepost";
 
-// importation des icones like et dislike
+// importation des icones like et dislike, supprimer , modifier
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faThumbsUp } from "@fortawesome/free-regular-svg-icons";
 import { faThumbsDown } from "@fortawesome/free-regular-svg-icons";
 import { faThumbsUp as solidThumbsUp } from "@fortawesome/free-solid-svg-icons";
 import { faThumbsDown as solidThumbsDown } from "@fortawesome/free-solid-svg-icons";
+import { faTrashCan as TrashCan } from "@fortawesome/free-solid-svg-icons";
+import { faPenToSquare as PenToSquare } from "@fortawesome/free-solid-svg-icons";
 
 function DisplayPosts(props) {
   const [postData, setPostData] = useState([]);
-  const [countLike, setCountLike] = useState();
-  const [countDislike, setCountDislike] = useState();
-  // const [onePost, setOnePost] = useState([]);
+  let [like, setLike] = useState(0);
+  let [dislike, setDislike] = useState(0);
 
   let user = JSON.parse(localStorage.getItem("loginIdentifiers"));
   let token = user[2];
-  let id = user[0];
+  let userId = user[0];
   let role = user[1];
 
   /*Requête pour récupérer les post dans l'API */
@@ -56,7 +59,7 @@ function DisplayPosts(props) {
     return postDate;
   }
   /* Traitement des like et dislike*/
-  function likeOrDislike(e, postId) {
+  function likeOrDislike(e, postId, like) {
     e.preventDefault();
     const emptyLike = document.querySelector(".like-empty");
     const fullLike = document.querySelector(".like-full");
@@ -64,12 +67,43 @@ function DisplayPosts(props) {
     const fullDislike = document.querySelector(".dislike-full");
 
     let likeordislikeform = new FormData();
+    likeordislikeform.append("id", postId);
+    likeordislikeform.append("like", like);
 
     axios({
       method: "post",
-      url: `${process.env.REACT_APP_API_URL}/${postId}/like`,
-      // data: {},
-    });
+      url: `${process.env.REACT_APP_API_URL}${userId}/${like}`,
+      data: likeordislikeform,
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    })
+      .then((res) => {
+        console.log(res);
+        if (res.data.errors) {
+          console.log(res.data.errors);
+        } else {
+          switch (like) {
+            case 1:
+              React.render.findDOMNode(fullLike).className = "like-full";
+              break;
+            case -1:
+              React.render.findDOMNode(fullDislike).className = "dislike-full";
+              break;
+            case 0:
+              React.render.findDOMNode(emptyLike).className = "like-empty";
+              React.render.findDOMNode(emptyDislike).className =
+                "dislike-empty";
+              break;
+            default:
+          }
+          // const element = document.getElementById("ID");
+          // ReactDOM.findDOMNode(element).className = "className"
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   /* suppression d'un post*/
@@ -77,7 +111,7 @@ function DisplayPosts(props) {
     e.preventDefault();
 
     let deleteForm = new FormData();
-    deleteForm.append("userId", id);
+    deleteForm.append("userId", userId);
 
     await axios({
       method: "delete",
@@ -123,42 +157,40 @@ function DisplayPosts(props) {
             <Msg id="msgCard">
               <MsgParagraph>{postElement.text}</MsgParagraph>
             </Msg>
-            <LikeDiv id="likeOrdislike">
+            <LikeButtonDiv id="likeOrdislike">
+              <DisplayLikeDiv>
               <IconDiv id="like">
                 <ButtonLikeDislike
                   onClick={(e) => {
-                    likeOrDislike(e, postElement._id);
+                    like === 0 ? setLike(1) : setLike(0);
+                    likeOrDislike(e, postElement._id, like);
                   }}
                 >
-                  <FontAwesomeIcon
-                    icon={faThumbsUp}
-                    className="icon-empty like-empty"
-                  />
-                  <FontAwesomeIcon
-                    icon={solidThumbsUp}
-                    className="icon-full like-full"
-                  />
-                  <LikeCount> {countLike} </LikeCount>
+                  <FontAwesomeIcon icon={faThumbsUp} className="like-empty" />
+                  <FontAwesomeIcon icon={solidThumbsUp} className="like-full" />
+                  <LikeCount>{postElement.likes} </LikeCount>
                 </ButtonLikeDislike>
               </IconDiv>
               <IconDiv id="dislike">
                 <ButtonLikeDislike
                   onClick={(e) => {
-                    likeOrDislike(e, postElement._id);
+                    like === 0 ? setLike(-1) : setLike(0);
+                    likeOrDislike(e, postElement._id, like);
                   }}
                 >
                   <FontAwesomeIcon
                     icon={faThumbsDown}
-                    className="icon-empty dislike-empty"
+                    className="dislike-empty"
                   />
                   <FontAwesomeIcon
                     icon={solidThumbsDown}
-                    className="icon-full dislike-full"
+                    className="dislike-full"
                   />
-                  <LikeCount> {countDislike} </LikeCount>
+                  <LikeCount>{postElement.dislikes} </LikeCount>
                 </ButtonLikeDislike>
               </IconDiv>
-              {(postElement.user._id === id || role === true ) && (
+              </DisplayLikeDiv>
+              {(postElement.user._id === userId || role === true) && (
                 <ButtonDiv>
                   <ButtonCard
                     type="submit"
@@ -166,17 +198,21 @@ function DisplayPosts(props) {
                     onClick={(e) => {
                       modifyPost(e, postElement._id);
                     }}
-                  />
+                  >
+                    <FontAwesomeIcon icon={PenToSquare} className="btn-icon icon-modify-delete" />
+                  </ButtonCard>
                   <ButtonCard
                     type="submit"
                     value="Supprimer"
                     onClick={(e) => {
                       deletePost(e, postElement._id, index);
                     }}
-                  />
+                  >
+                    <FontAwesomeIcon icon={TrashCan} className="btn-icon icon-modify-delete" />
+                  </ButtonCard>
                 </ButtonDiv>
               )}
-            </LikeDiv>
+            </LikeButtonDiv>
           </MsgCard>
         </Card>
       ))}
