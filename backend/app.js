@@ -1,7 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const helmet = require("helmet");
-const bodyParser = require("body-parser");
 const path = require("path"); //concerne les images
 const postRoutes = require("./routes/post"); //pour les routes
 const userRoutes = require("./routes/user");
@@ -36,7 +35,8 @@ app.use((req, res, next) => {
   }
 });
 
-app.use(bodyParser.json());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 app.use("/api/auth", userRoutes);
 app.use("/api/post", postRoutes);

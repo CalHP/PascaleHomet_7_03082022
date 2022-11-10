@@ -17,18 +17,17 @@ import {
   TextareaModifyPage,
   ButtonDisplayModify,
   FormDivModify,
-  ImgLoadedModifyPost
+  ImgLoadedModifyPost,
 } from "../utils/style/style_modify_post";
 
 export default function ModifyPost() {
   const [text, setText] = useState("");
   const [image, setImage] = useState();
   const [imageUrl, setImageUrl] = useState(photo);
+  const [previousImage, setPreviousImage] = useState();
 
   let params = useParams();
   let id = params.id;
-
-      let formdata = new FormData();
 
   let user = JSON.parse(localStorage.getItem("loginIdentifiers"));
   let token = user[2];
@@ -39,21 +38,29 @@ export default function ModifyPost() {
     axios
       .get(`${process.env.REACT_APP_API_URL}post/${id}`)
       .then((res) => {
-        setImageUrl(res.data.imageUrl);
-        setText(res.data.text);       
+        setPreviousImage(res.data.imageUrl);
+        setText(res.data.text);
       })
       .catch((e) => {
         console.log(e.message);
       });
   }, [id]);
 
-  // previousImage = firstImage.slice(29, -17); 
+  const uploadImage = async (e, target) => {
+    e.preventDefault();
+    setImage(target);
+    setImageUrl(URL.createObjectURL(target));
+  };
 
   const submitPost = async (e) => {
     e.preventDefault();
+    let formdata = new FormData();
 
     formdata.append("user", idUser);
     formdata.append("text", text);
+    if (image) {
+      formdata.append("image", image);
+    }
 
     await axios({
       method: "put",
@@ -76,20 +83,17 @@ export default function ModifyPost() {
       });
   };
 
-  const uploadImage = async (e, target) => {
-    e.preventDefault();
-    formdata.append("image", image);
-    setImage(target);
-    setImageUrl(URL.createObjectURL(target));
-  };
-
   return (
     <FormModifyPage action="" onSubmit={submitPost}>
       {/* début Carte */}
       <TextDiv>
         <FormDivModify>
           <DivImgLegende>
-            <ImgLoadedModifyPost id="photo" src={imageUrl} alt="" />
+            <ImgLoadedModifyPost
+              id="photo"
+              src={image ? imageUrl : previousImage}
+              alt=""
+            />
             <PhotoPath>{image ? image.name : ""} </PhotoPath>
           </DivImgLegende>
           <TextareaModifyPage
@@ -101,7 +105,7 @@ export default function ModifyPost() {
         </FormDivModify>
         <ButtonDisplayModify>
           <div className="parent-div">
-            <button className="btn-upload">Changer la photo ?</button>
+            <button className="btn-upload">Changer la photo</button>
             <input
               type="file"
               name="upfile"
@@ -111,7 +115,10 @@ export default function ModifyPost() {
             />
           </div>
           <Button type="submit" className="btn">
-          <FontAwesomeIcon icon={PenToSquare} className="btn-icon icon-modify-delete" />
+            <FontAwesomeIcon
+              icon={PenToSquare}
+              className="btn-icon icon-modify-delete"
+            />
           </Button>
         </ButtonDisplayModify>
       </TextDiv>

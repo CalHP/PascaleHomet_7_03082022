@@ -108,11 +108,17 @@ export const HomeFormRegister = styled.form`
   }
 `;
 export const ErrorConnexion = styled.p`
-  font-size: 16px;
+  font-size: 12px;
   color: white;
   font-weight: bold;
   letter-spacing: 2px;
   text-align: center;
+`;
+export const ErrorConnexionChekbox = styled.p`
+font-size: 12px;
+color: white;
+font-weight: bold;
+letter-spacing: 2px;
 `;
 export const DivCheckbox = styled.div`
   padding: 2% 1% 1% 35%;

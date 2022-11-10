@@ -46,7 +46,7 @@ export const ImgLoadedCreatePost = styled.img`
 export const Buttondisplay = styled.div`
   display: flex;
   justify-content: space-between;
-  margin: 0 8%;
+  margin: 2% 8%;
 `;
 export const TextDiv = styled.div`
   width: 100%;

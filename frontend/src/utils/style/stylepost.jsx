@@ -51,6 +51,9 @@ export const ImgDiv = styled.div`
   @media (max-width: 768px) {
     height: 10%;
   }
+  @media (max-width: 768px) {
+    height: 100%;
+  }
 `;
 export const ImgP = styled.p`
   font-size: 14px;
@@ -104,6 +107,8 @@ export const MsgParagraph = styled.p`
 `;
 export const IconDiv = styled.div`
   height: 100%;
+  width: 35%;
+  margin-top: 3%;
   @media (max-width: 454px) {
     width: 41%;
   }
@@ -143,7 +148,10 @@ export const ButtonLikeDislike = styled.button`
   width: 50px;
 `;
 export const LikeCount = styled.div`
-  padding-left: 26%;
+padding-left: 9%;
+font-size: 13px;
+margin-top: 14%;
+}
   @media (max-width: 768px) {
     font-size: 14px;
     margin-top: 14%;

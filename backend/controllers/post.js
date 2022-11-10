@@ -4,7 +4,7 @@ const fs = require("fs");
 exports.getAllPosts = (req, res, next) => {
   Post.find()
     .populate("user")
-    .sort({ created_at: -1 })
+    .sort({ _id: -1 })
     .then((posts) => {
       res.status(200).json(posts);
     })
@@ -34,7 +34,7 @@ exports.createPost = (req, res, next) => {
       res.status(400).json({ error });
     });
 };
-/*Post.populate("user").execPopulate();*/
+/*post.populate("user").execPopulate();*/
 exports.modifyPost = (req, res, next) => {
   const postObject = req.file
     ? {
@@ -51,12 +51,17 @@ exports.modifyPost = (req, res, next) => {
       if (post.user != req.auth.userId) {
         res.status(401).json({ message: "Not authorized" });
       } else {
-        const filename = post.imageUrl.split("/images/")[1];
-        fs.unlink(`images/${filename}`, () =>
-          Post.updateOne({ _id: req.params.id }, { ...postObject })
-            .then(() => res.status(200).json({ message: "Objet modifié!" }))
-            .catch((error) => res.status(401).json({ error }))
-        );
+        if (postObject.imageUrl) {
+          const filename = post.imageUrl.split("/images/")[1];
+          fs.unlink(`images/${filename}`, (err) => {
+            if (err) throw err;
+            console.log("image supprimée : " + `${filename}`);
+          });
+        }
+
+        Post.updateOne({ _id: req.params.id }, { ...postObject })
+          .then(() => res.status(200).json({ message: "Objet modifié!" }))
+          .catch((error) => res.status(401).json({ error }));
       }
     })
     .catch((error) => {
@@ -95,15 +100,18 @@ exports.deletePost = (req, res, next) => {
 };
 
 exports.likeOrDislike = (req, res, next) => {
-  const like = req.body.like;
-  const userId = req.params.userId;
-  const postId = req.body.id;
+  let like = req.body.like;
+  const userId = req.auth.userId;
+  const postId = req.params.id;
 
   if (like === 1) {
     Post.findOne({ _id: postId })
       .then((post) => {
         if (!post.usersLiked.includes(userId)) {
-          Post.updateOne({ _id: postId }, { $inc: { likes: +1 } })
+          Post.updateOne(
+            { _id: postId },
+            { $inc: { likes: +1 }, $push: { usersLiked: userId } }
+          )
             .then((post) => res.status(200).json({ message: "Like ajouté !" }))
             .catch((error) => res.status(400).json({ error }));
         }
@@ -113,7 +121,10 @@ exports.likeOrDislike = (req, res, next) => {
     Post.findOne({ _id: postId })
       .then((post) => {
         if (!post.usersDisliked.includes(userId)) {
-          Post.updateOne({ _id: sauceId }, { $inc: { dislikes: +1 } })
+          Post.updateOne(
+            { _id: postId },
+            { $inc: { dislikes: +1 }, $push: { usersDisliked: userId } }
+          )
             .then((post) =>
               res.status(200).json({ message: "Dislike ajouté !" })
             )
@@ -127,7 +138,10 @@ exports.likeOrDislike = (req, res, next) => {
         // Si le tableau "userLiked" contient l'ID de l'utilisateur
         if (post.usersLiked.includes(userId)) {
           // On enlève un like du tableau "userLiked"
-          Post.updateOne({ _id: postId }, { $inc: { likes: -1 } })
+          Post.updateOne(
+            { _id: postId },
+            { $inc: { likes: -1 }, $pull: { usersLiked: userId } }
+          )
             .then((post) => {
               res.status(200).json({ message: "Like supprimé !" });
             })
@@ -135,7 +149,10 @@ exports.likeOrDislike = (req, res, next) => {
         } else if (post.usersDisliked.includes(userId)) {
           // Si le tableau "userDisliked" contient l'ID de l'utilisateur
           // On enlève un dislike du tableau "userDisliked"
-          Post.updateOne({ _id: postId }, { $inc: { dislikes: -1 } })
+          Post.updateOne(
+            { _id: postId },
+            { $inc: { dislikes: -1 }, $pull: { usersDisliked: userId } }
+          )
             .then((post) => {
               res.status(200).json({ message: "Dislike supprimé !" });
             })

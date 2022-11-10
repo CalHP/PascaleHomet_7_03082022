@@ -44,11 +44,10 @@ export default function PostForm({ postData, setPostData }) {
         if (res.data.errors) {
           console.log(res.data.errors);
         } else {
-          // setPostData((postData) => [res.data.post, ...postData]);
           setImage(null);
           setImageUrl(photo);
           document.querySelector("#textPostForm").value = "";
-          window.location.reload();
+          setPostData((postData) => [res.data.post, ...postData]);
         }
       })
       .catch((err) => {
@@ -58,7 +57,6 @@ export default function PostForm({ postData, setPostData }) {
 
   const uploadImage = async (e, target) => {
     e.preventDefault();
-
     setImage(target);
     setImageUrl(URL.createObjectURL(target));
   };

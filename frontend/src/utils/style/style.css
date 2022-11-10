@@ -6,22 +6,17 @@ body {
   font-family: Lato, "Arial", sans-serif;
 }
 /* icone like et dislike */
-.like-empty, 
-.dislike-empty{
+.icon-black{
   color: #4e5166;
-  height: 4%;
-  position: absolute !important ;
-  opacity: 1;
+  height: 30px;
 }
-.like-full {
+.like-green {
   color: #32cd32;
-  height: 28px;
-  opacity: 1;
+  height: 30px;
 }
-.dislike-full {
+.dislike-red {
   color: #fd2d01;
-  height: 28px;
-  opacity: 1;
+  height: 30px;
 }
 #dislike {
   margin-left: 3%;
@@ -93,10 +88,7 @@ body {
   .img_postform {
     width: 69%;
   }
-  .like-empty,
-  .dislike-empty {
-    height: 3%;
-  }
+
   .like-full,
   .dislike-full {
     height: 19px;
@@ -108,9 +100,5 @@ body {
 @media screen and (max-width: 768px) {
   .icon-modify-delete {
     font-size: 22px;
-  }
-  .like-empty,
-  .dislike-empty {
-    height: 3%;
   }
 }

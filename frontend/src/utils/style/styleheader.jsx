@@ -21,6 +21,7 @@ export const HeaderDivImage = styled.div`
     height: 180px;
   }
   @media (max-width: 454px) {
+    height: 127px;
     flex-direction: column;
   }
 `;
@@ -49,7 +50,7 @@ export const HeaderNavLi = styled.li`
   }
   @media (max-width: 454px) {
     padding: 0;
-    margin: -1% 2% 0 0;
+    margin: -5% -1% 0 0;
   }
 `;
 export const HeaderNavLink = styled(Link)`

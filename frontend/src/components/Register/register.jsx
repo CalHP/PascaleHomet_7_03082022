@@ -12,7 +12,8 @@ import {
   ErrorConnexion,
   FormDisplayDiv,
   LabelDisplayDiv,
-  ButtonRegisterDiv
+  ButtonRegisterDiv,
+  ErrorConnexionChekbox
 } from "../../utils/style/connexion";
 
 function Register(props) {
@@ -101,18 +102,23 @@ function Register(props) {
             data: { email: email, password: password },
           })
             .then((res) => {
-              const user = res.data.user;        
+              const user = res.data.user;
               const role = res.data.role;
               const token = res.data.token;
-              let identifiers = JSON.parse(localStorage.getItem("loginIdentifiers"));
-      
-              if(identifiers){
+              let identifiers = JSON.parse(
+                localStorage.getItem("loginIdentifiers")
+              );
+
+              if (identifiers) {
                 localStorage.clear();
               }
               identifiers = [];
               identifiers.push(user, role, token);
-              localStorage.setItem("loginIdentifiers", JSON.stringify(identifiers));
-              window.location = "/display_posts" ;
+              localStorage.setItem(
+                "loginIdentifiers",
+                JSON.stringify(identifiers)
+              );
+              window.location = "/display_posts";
             })
             .catch((err) => {
               if (err.response.data) {
@@ -209,7 +215,7 @@ function Register(props) {
                 conditions générales
               </a>
             </LabelTerms>
-            <ErrorConnexion className="terms errors"></ErrorConnexion>
+            <ErrorConnexionChekbox className="terms errors"></ErrorConnexionChekbox>
           </DivCheckbox>
           <ButtonRegisterDiv>
             <ButtonRegister type="submit" value="Vous inscrire" />
