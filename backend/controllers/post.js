@@ -1,5 +1,6 @@
 const Post = require("../models/post");
 const fs = require("fs");
+const { default: PostForm } = require("../../frontend/src/components/PostForm/postform");
 
 exports.getAllPosts = (req, res, next) => {
   Post.find()
@@ -34,7 +35,6 @@ exports.createPost = (req, res, next) => {
       res.status(400).json({ error });
     });
 };
-/*post.populate("user").execPopulate();*/
 exports.modifyPost = (req, res, next) => {
   const postObject = req.file
     ? {

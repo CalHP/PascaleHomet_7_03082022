@@ -68,18 +68,16 @@ function DisplayCards(props) {
   useEffect(() => {
     if (!postElement.usersLiked.includes(userId)) {
       setLikeName("icon-black");
-      setCountLike(0);
     } else {
       setLikeName("like-green");
-      setCountLike(1);
     }
     if (!postElement.usersDisliked.includes(userId)) {
       setDislikeName("icon-black");
-      setCountDislike(0);
     } else {
       setDislikeName("dislike-red");
-      setCountDislike(1);
     }
+    setCountLike(postElement.likes);
+    setCountDislike(postElement.dislikes);
   }, []);
 
   async function likeOrDislike(e, postId, like, index) {
@@ -93,9 +91,6 @@ function DisplayCards(props) {
         (value === -1 &&
           (postElement.usersLiked.includes(userId) || countLike === 1))
       ) {
-        console.log(value + ' 1')
-        console.log(countLike + ' 2')
-        console.log(countDislike + ' 3')
         alert("Vous ne pouvez pas liker et disliker un post en même temps !");
       } else {
         const data = { like: value };
@@ -115,16 +110,16 @@ function DisplayCards(props) {
               console.log(res.data.errors);
             } else {
               if (res.data.message === "Like ajouté !") {
-                setCountLike(1);
+                setCountLike(countLike+1);
                 setLikeName("like-green");
               } else if (res.data.message === "Dislike ajouté !") {
-                setCountDislike(1);
+                setCountDislike(countDislike+1);
                 setDislikeName("dislike-red");
               } else if (res.data.message === "Like supprimé !") {
-                setCountLike(0);
+                setCountLike(countLike-1);
                 setLikeName("icon-black");
               } else if (res.data.message === "Dislike supprimé !") {
-                setCountDislike(0);
+                setCountDislike(countDislike-1);
                 setDislikeName("icon-black");
               }
             }
