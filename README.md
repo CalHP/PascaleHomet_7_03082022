@@ -11,8 +11,10 @@ Pour faire fonctionner le projet, vous devez installer :
 
 Installation
     Cloner le projet.
-   ( Optionnel )Importer la DB test 
-    Dans le terminal, aller sur le dossier backend :puis node server
+   ( Optionnel )Importer la DB test : 
+        - installer MongoDB Database Tools
+        - mongorestore <options> <connection-string> <directory or file to restore>   
 
+    puis lancer la bdd
     Dans un nouveau terminal, aller sur le dossier frontend :puis npm start
     Rendez-vous sur http://localhost:3006/

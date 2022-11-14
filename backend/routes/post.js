@@ -6,7 +6,6 @@ const multer = require('../middleware/multer-config');
 
 const postCtrl = require('../controllers/post');
 
-//router.options('/:id', cors());
 // Affichage de tous les posts
 router.get('/',postCtrl.getAllPosts);
 // Affichage d'un seul post

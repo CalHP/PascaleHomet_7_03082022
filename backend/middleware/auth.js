@@ -2,7 +2,8 @@ const jwt = require('jsonwebtoken');
 const dotenv = require("dotenv");
 dotenv.config();
 const MY_APP_SECRET = process.env.APP_SECRET;
- 
+
+/* Décryptage du mot de passe */
 module.exports = (req, res, next) => {
    try {
        const token = req.headers.authorization.split(' ')[1];

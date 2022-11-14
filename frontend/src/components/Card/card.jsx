@@ -36,10 +36,13 @@ function DisplayCards(props) {
 
   const postElement = props.item;
   const key = props.index;
+  const [likeCurrentUser, setLikeCurrentUser] = useState();
+  const [dislikeCurrentUser, setDislikeCurrentUser] = useState();
   const [countLike, setCountLike] = useState(0);
   const [countDislike, setCountDislike] = useState(0);
-  const [likeName, setLikeName] = useState();
-  const [dislikeName, setDislikeName] = useState();
+  const [likeClass, setLikeClass] = useState();
+  const [dislikeClass, setDislikeClass] = useState();
+  const [onClick, setOnClick] = useState(false);
 
   /* Affichage de la date Version France */
   function getFrenchDate(date) {
@@ -50,6 +53,7 @@ function DisplayCards(props) {
   /* Traitement des like et dislike*/
   async function getIfLiked(usersLiked) {
     let test = usersLiked.includes(userId);
+    setOnClick(true);
     if (test) {
       return 0;
     } else {
@@ -59,6 +63,7 @@ function DisplayCards(props) {
 
   async function getIfDisliked(usersDisliked) {
     let test = usersDisliked.includes(userId);
+    setOnClick(true);
     if (test) {
       return 0;
     } else {
@@ -67,18 +72,28 @@ function DisplayCards(props) {
   }
   useEffect(() => {
     if (!postElement.usersLiked.includes(userId)) {
-      setLikeName("icon-black");
+      setLikeCurrentUser(0);
+      setLikeClass("icon-black");
     } else {
-      setLikeName("like-green");
+      setLikeCurrentUser(1);
+      setLikeClass("like-green");
     }
     if (!postElement.usersDisliked.includes(userId)) {
-      setDislikeName("icon-black");
+      setDislikeCurrentUser(0);
+      setDislikeClass("icon-black");
     } else {
-      setDislikeName("dislike-red");
+      setDislikeCurrentUser(1);
+      setDislikeClass("dislike-red");
     }
     setCountLike(postElement.likes);
     setCountDislike(postElement.dislikes);
-  }, []);
+  }, [
+    postElement.dislikes,
+    postElement.likes,
+    postElement.usersDisliked,
+    postElement.usersLiked,
+    userId,
+  ]);
 
   async function likeOrDislike(e, postId, like, index) {
     e.preventDefault();
@@ -87,14 +102,16 @@ function DisplayCards(props) {
       if (
         (value === 1 &&
           (postElement.usersDisliked.includes(userId) ||
-            countDislike === 1)) ||
+            dislikeCurrentUser === 1 ||
+            onClick === true)) ||
         (value === -1 &&
-          (postElement.usersLiked.includes(userId) || countLike === 1))
+          (postElement.usersLiked.includes(userId) ||
+            likeCurrentUser === 1 ||
+            onClick === true))
       ) {
         alert("Vous ne pouvez pas liker et disliker un post en même temps !");
       } else {
         const data = { like: value };
-        console.log(value)
         axios({
           method: "post",
           url: `${process.env.REACT_APP_API_URL}post/${postId}/like`,
@@ -105,22 +122,23 @@ function DisplayCards(props) {
           },
         })
           .then((res) => {
-            console.log(res);
             if (res.data.errors) {
               console.log(res.data.errors);
             } else {
               if (res.data.message === "Like ajouté !") {
-                setCountLike(countLike+1);
-                setLikeName("like-green");
+                setCountLike(countLike + 1);
+                setLikeClass("like-green");
               } else if (res.data.message === "Dislike ajouté !") {
-                setCountDislike(countDislike+1);
-                setDislikeName("dislike-red");
+                setCountDislike(countDislike + 1);
+                setDislikeClass("dislike-red");
               } else if (res.data.message === "Like supprimé !") {
-                setCountLike(countLike-1);
-                setLikeName("icon-black");
+                setLikeCurrentUser(0);
+                setCountLike(countLike - 1);
+                setLikeClass("icon-black");
               } else if (res.data.message === "Dislike supprimé !") {
-                setCountDislike(countDislike-1);
-                setDislikeName("icon-black");
+                setDislikeCurrentUser(0);
+                setCountDislike(countDislike - 1);
+                setDislikeClass("icon-black");
               }
             }
           })
@@ -189,8 +207,7 @@ function DisplayCards(props) {
                   );
                 }}
               >
-                
-                <FontAwesomeIcon icon={solidThumbsUp} className={likeName} />
+                <FontAwesomeIcon icon={solidThumbsUp} className={likeClass} />
                 <LikeCount> {countLike} </LikeCount>
               </ButtonLikeDislike>
             </IconDiv>
@@ -207,9 +224,9 @@ function DisplayCards(props) {
               >
                 <FontAwesomeIcon
                   icon={solidThumbsDown}
-                  className={dislikeName}
+                  className={dislikeClass}
                 />
-                <LikeCount>{countDislike} </LikeCount>
+                <LikeCount>{countDislike}</LikeCount>
               </ButtonLikeDislike>
             </IconDiv>
           </DisplayLikeDiv>

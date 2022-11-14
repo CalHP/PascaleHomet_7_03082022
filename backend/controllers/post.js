@@ -1,7 +1,7 @@
 const Post = require("../models/post");
 const fs = require("fs");
-const { default: PostForm } = require("../../frontend/src/components/PostForm/postform");
 
+/* Récupération de tous les posts */
 exports.getAllPosts = (req, res, next) => {
   Post.find()
     .populate("user")
@@ -12,12 +12,14 @@ exports.getAllPosts = (req, res, next) => {
     .catch((error) => res.status(400).json({ error }));
 };
 
+/* Récupération d'un seul post' */
 exports.getOnePost = (req, res, next) => {
   Post.findOne({ _id: req.params.id })
     .then((post) => res.status(200).json(post))
     .catch((error) => res.status(404).json({ error }));
 };
 
+/* Création d'un post */
 exports.createPost = (req, res, next) => {
   const post = new Post({
     ...req.body,
@@ -26,15 +28,22 @@ exports.createPost = (req, res, next) => {
       req.file.filename
     }`,
   });
-  post
-    .save()
-    .then((post) => {
-      res.status(201).json({ message: "Post enregistré", post: post });
-    })
-    .catch((error) => {
-      res.status(400).json({ error });
-    });
+  post.save().then((post) => {
+    Post.findOne(post._id)
+      .populate("user")
+      .then((newpost) => {
+        res.status(201).json({ message: "Post enregistré", post: newpost });
+      })
+      .catch((error) => {
+        res.status(400).json({ error });
+      })
+      .catch((error) => {
+        res.status(400).json({ error });
+      });
+  });
 };
+
+/* Modification d'un post */
 exports.modifyPost = (req, res, next) => {
   const postObject = req.file
     ? {
@@ -69,6 +78,7 @@ exports.modifyPost = (req, res, next) => {
     });
 };
 
+/* Suppression d'un post */
 exports.deletePost = (req, res, next) => {
   Post.findOne({ _id: req.params.id })
     .then((post) => {
@@ -99,6 +109,7 @@ exports.deletePost = (req, res, next) => {
     });
 };
 
+/* Traitement des likes et dislikes */
 exports.likeOrDislike = (req, res, next) => {
   let like = req.body.like;
   const userId = req.auth.userId;

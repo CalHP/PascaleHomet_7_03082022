@@ -7,6 +7,7 @@ const MIME_TYPES = {
   "image/png": "png",
 };
 
+/* Récupération de l'image + création du lien*/
 const storage = multer.diskStorage({
   destination: (req, file, callback) => {
     callback(null, "images");
