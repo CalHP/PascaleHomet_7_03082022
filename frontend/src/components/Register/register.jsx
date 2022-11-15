@@ -102,7 +102,7 @@ function Register(props) {
             data: { email: email, password: password },
           })
             .then((res) => {
-              const user = res.data.user;
+              const user = res.data.userId;
               const role = res.data.role;
               const token = res.data.token;
               let identifiers = JSON.parse(

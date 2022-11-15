@@ -3,7 +3,7 @@ import colors from "./colors";
 
 // Présentation page d'accueil -connexion
 export const HomeImg = styled.img`
-  height: 32em;
+  height: 37em;
   width: 100%;
   object-fit: cover;
   opacity: 0.5;
@@ -17,7 +17,7 @@ export const HomeImg = styled.img`
 `;
 export const HomeDiv = styled.div`
   background: ${colors.primary};
-  height: 32em;
+  height: 37em;
   @media (max-width: 768px) {
     height: 41em;
   }

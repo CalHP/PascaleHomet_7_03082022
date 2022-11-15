@@ -109,8 +109,37 @@ function DisplayCards(props) {
             likeCurrentUser === 1 ||
             onClick === true))
       ) {
-        alert("Vous ne pouvez pas liker et disliker un post en même temps !");
-      } else {
+        const data = { like: 0 };
+        axios({
+          method: "post",
+          url: `${process.env.REACT_APP_API_URL}post/${postId}/like`,
+          data: data,
+          headers: {
+            Authorization: "Bearer " + token,
+            "Content-Type": "application/json",
+          },
+        })
+          .then((res) => {
+            if (res.data.errors) {
+              console.log(res.data.errors);
+            } else {
+             if (res.data.message === "Like supprimé !") {
+              console.log("coucou like suppr 1")
+                setLikeCurrentUser(0);
+                setCountLike(countLike - 1);
+                setLikeClass("icon-black");
+              } else if (res.data.message === "Dislike supprimé !") {
+                console.log("coucou disl suppr 1")
+                setDislikeCurrentUser(0);
+                setCountDislike(countDislike - 1);
+                setDislikeClass("icon-black");
+              }
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
         const data = { like: value };
         axios({
           method: "post",
@@ -126,16 +155,20 @@ function DisplayCards(props) {
               console.log(res.data.errors);
             } else {
               if (res.data.message === "Like ajouté !") {
+                console.log("coucou like ajout")
                 setCountLike(countLike + 1);
                 setLikeClass("like-green");
               } else if (res.data.message === "Dislike ajouté !") {
+                console.log("coucou dislike ajout")
                 setCountDislike(countDislike + 1);
                 setDislikeClass("dislike-red");
               } else if (res.data.message === "Like supprimé !") {
+                console.log("coucou like suppr 2")
                 setLikeCurrentUser(0);
                 setCountLike(countLike - 1);
                 setLikeClass("icon-black");
               } else if (res.data.message === "Dislike supprimé !") {
+                console.log("coucou dislike suppr 2")
                 setDislikeCurrentUser(0);
                 setCountDislike(countDislike - 1);
                 setDislikeClass("icon-black");
@@ -145,7 +178,6 @@ function DisplayCards(props) {
           .catch((err) => {
             console.log(err);
           });
-      }
     });
   }
   /* suppression d'un post*/
